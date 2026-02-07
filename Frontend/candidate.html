@@ -490,7 +490,7 @@
                         <p>Innovation Labs</p>
                         <span class="trust-badge trust-high">High Trust</span>
                         <p>📍 Remote | 💰 ₹15,000/month | ⏰ 6 months</p>
-                        <button class="btn btn-primary btn-small">Apply Now</button>
+                        <button class="btn btn-primary btn-small" onclick="applyNow('Full Stack Developer Intern', 'Innovation Labs')">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Save</button>
                     </div>
                 </div>
@@ -796,7 +796,6 @@
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
         });
-
         overlay.addEventListener('click', () => {
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
@@ -809,6 +808,11 @@
                 langDesktop.value = e.target.value;
                 langDesktop.dispatchEvent(new Event('change'));
             });
+        }
+        function applyNow(jobTitle, company) {
+            if (confirm(`Do you want to apply for ${jobTitle} at ${company}?`)) {
+                alert(`Application submitted successfully for ${jobTitle} at ${company}!\n\nYou will receive a confirmation email shortly.`);
+            }
         }
     </script>
 </body>
