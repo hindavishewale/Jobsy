@@ -340,22 +340,22 @@
                 <h2>Jobsy</h2>
             </div>
             <ul class="nav-menu">
-                <li><a href="#dashboard" class="active" onclick="showSection('dashboard')">📊 Dashboard</a></li>
-                <li><a href="#internships" onclick="showSection('internships')">💼 Browse Internships</a></li>
-                <li><a href="#applications" onclick="showSection('applications')">📝 My Applications</a></li>
-                <li><a href="#saved" onclick="showSection('saved')">⭐ Saved</a></li>
-                <li><a href="#skills" onclick="showSection('skills')">🎯 Skill Gap Analysis</a></li>
-                <li><a href="#roadmap" onclick="showSection('roadmap')">🗺️ Learning Roadmap</a></li>
-                <li><a href="#quiz" onclick="showSection('quiz')">📚 Take Quiz</a></li>
-                <li><a href="#profile" onclick="showSection('profile')">👤 Profile</a></li>
-                <li><a href="#chatbot" onclick="showSection('chatbot')">💬 AI Assistant</a></li>
-                <li><a href="index.html">🚪 Logout</a></li>
+                <li><a href="#dashboard" class="active" onclick="showSection('dashboard')">📊 <span data-i18n="dashboard">Dashboard</span></a></li>
+                <li><a href="#internships" onclick="showSection('internships')">💼 <span data-i18n="browseInternships">Browse Internships</span></a></li>
+                <li><a href="#applications" onclick="showSection('applications')">📝 <span data-i18n="myApplications">My Applications</span></a></li>
+                <li><a href="#saved" onclick="showSection('saved')">⭐ <span data-i18n="saved">Saved</span></a></li>
+                <li><a href="#skills" onclick="showSection('skills')">🎯 <span data-i18n="skillGap">Skill Gap Analysis</span></a></li>
+                <li><a href="#roadmap" onclick="showSection('roadmap')">🗺️ <span data-i18n="learningRoadmap">Learning Roadmap</span></a></li>
+                <li><a href="#quiz" onclick="showSection('quiz')">📚 <span data-i18n="takeQuiz">Take Quiz</span></a></li>
+                <li><a href="#profile" onclick="showSection('profile')">👤 <span data-i18n="profile">Profile</span></a></li>
+                <li><a href="#chatbot" onclick="showSection('chatbot')">💬 <span data-i18n="aiAssistant">AI Assistant</span></a></li>
+                <li><a href="index.html">🚪 <span data-i18n="logout">Logout</span></a></li>
             </ul>
         </aside>
         <main class="main-content">
             <div class="top-bar">
                 <div>
-                    <h1 style="margin:0;font-size:1.5rem">Welcome back, <span id="userName">Candidate</span>!</h1>
+                    <h1 style="margin:0;font-size:1.5rem"><span data-i18n="welcomeBack">Welcome back</span>, <span id="userName">Candidate</span>!</h1>
                 </div>
                 <div class="user-info">
                     <select id="language">
@@ -369,24 +369,24 @@
             <div id="dashboard" class="content-section">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h3>Applications</h3>
+                        <h3 data-i18n="applications">Applications</h3>
                         <div class="number">12</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Interviews</h3>
+                        <h3 data-i18n="interviews">Interviews</h3>
                         <div class="number">3</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Saved</h3>
+                        <h3 data-i18n="saved">Saved</h3>
                         <div class="number">8</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Profile Views</h3>
+                        <h3 data-i18n="profileViews">Profile Views</h3>
                         <div class="number">45</div>
                     </div>
                 </div>
                 <div class="section">
-                    <h2>Recent Applications</h2>
+                    <h2 data-i18n="recentApplications">Recent Applications</h2>
                     <div class="internship-card">
                         <h3>Frontend Developer Intern</h3>
                         <p>TechCorp Solutions</p>
@@ -403,12 +403,12 @@
                     </div>
                 </div>
                 <div class="section">
-                    <h2>Recommended for You</h2>
+                    <h2 data-i18n="recommendedForYou">Recommended for You</h2>
                     <div class="internship-card">
                         <h3>Full Stack Developer Intern</h3>
                         <p>Innovation Labs</p>
                         <span class="trust-badge trust-high">High Trust</span>
-                        <p> Remote |  ₹15,000/month |  6 months</p>
+                        <p>📍 Remote | 💰 ₹15,000/month | ⏰ 6 months</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Save</button>
                     </div>
@@ -425,7 +425,7 @@
                         <h3>Backend Developer Intern</h3>
                         <p>DataTech Inc.</p>
                         <span class="trust-badge trust-high">High Trust</span>
-                        <p> Bangalore |  ₹20,000/month |  6 months</p>
+                        <p>📍 Bangalore | 💰 ₹20,000/month | ⏰ 6 months</p>
                         <p>Skills: Node.js, MongoDB, Express</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Save</button>
@@ -434,7 +434,7 @@
                         <h3>Data Analyst Intern</h3>
                         <p>Analytics Pro</p>
                         <span class="trust-badge trust-medium">Medium Trust</span>
-                        <p> Mumbai |  ₹12,000/month |  3 months</p>
+                        <p>📍 Mumbai | 💰 ₹12,000/month | ⏰ 3 months</p>
                         <p>Skills: Python, Excel, SQL</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Save</button>
@@ -443,7 +443,7 @@
                         <h3>Marketing Intern</h3>
                         <p>Brand Builders</p>
                         <span class="trust-badge trust-high">High Trust</span>
-                        <p> Delhi |  ₹10,000/month |  4 months</p>
+                        <p>📍 Delhi | 💰 ₹10,000/month | ⏰ 4 months</p>
                         <p>Skills: Social Media, Content Writing</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Save</button>
@@ -486,7 +486,7 @@
                         <h3>Cloud Engineer Intern</h3>
                         <p>CloudTech Systems</p>
                         <span class="trust-badge trust-high">High Trust</span>
-                        <p> Pune |  ₹18,000/month |  6 months</p>
+                        <p>📍 Pune | 💰 ₹18,000/month | ⏰ 6 months</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Remove</button>
                     </div>
@@ -494,7 +494,7 @@
                         <h3>AI/ML Intern</h3>
                         <p>AI Innovations</p>
                         <span class="trust-badge trust-high">High Trust</span>
-                        <p> Hyderabad |  ₹25,000/month |  6 months</p>
+                        <p>📍 Hyderabad | 💰 ₹25,000/month | ⏰ 6 months</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Remove</button>
                     </div>
