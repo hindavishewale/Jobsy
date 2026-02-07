@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <style>
         body {
-            background: #f9fafb
+            background: #dbeafe
         }
 
         .dashboard {
@@ -19,7 +19,7 @@
         .sidebar {
             width: 250px;
             background: #fff;
-            border-right: 1px solid #e5e7eb;
+            border-right: 1px solid #3b82f6;
             position: fixed;
             height: 100vh;
             overflow-y: auto
@@ -27,12 +27,13 @@
 
         .sidebar-header {
             padding: 20px;
-            border-bottom: 1px solid #e5e7eb
+            border-bottom: 1px solid #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #2563eb)
         }
 
         .sidebar-header h2 {
             margin: 0;
-            color: #6366f1;
+            color: #fff;
             font-size: 1.5rem
         }
 
@@ -57,8 +58,8 @@
 
         .nav-menu a:hover,
         .nav-menu a.active {
-            background: #f0f1ff;
-            color: #6366f1
+            background: #dbeafe;
+            color: #2563eb
         }
 
         .nav-menu a i {
@@ -73,14 +74,18 @@
         }
 
         .top-bar {
-            background: #fff;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             padding: 15px 20px;
             border-radius: 8px;
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3)
+        }
+
+        .top-bar h1 {
+            color: #fff
         }
 
         .user-info {
@@ -93,8 +98,8 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: #6366f1;
-            color: #fff;
+            background: #fff;
+            color: #3b82f6;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -112,19 +117,20 @@
             background: #fff;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #3b82f6
         }
 
         .stat-card h3 {
             margin: 0 0 10px;
             font-size: 0.9rem;
-            color: #666
+            color: #1e40af
         }
 
         .stat-card .number {
             font-size: 2rem;
             font-weight: 700;
-            color: #111
+            color: #2563eb
         }
 
         .section {
@@ -138,24 +144,25 @@
         .section h2 {
             margin: 0 0 20px;
             font-size: 1.5rem;
-            color: #111
+            color: #2563eb
         }
 
         .internship-card {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #93c5fd;
             padding: 15px;
             border-radius: 8px;
-            margin-bottom: 15px
+            margin-bottom: 15px;
+            background: #eff6ff
         }
 
         .internship-card h3 {
             margin: 0 0 10px;
-            color: #111
+            color: #1e40af
         }
 
         .internship-card p {
             margin: 5px 0;
-            color: #666;
+            color: #1e3a8a;
             font-size: 0.9rem
         }
 
@@ -192,21 +199,22 @@
         }
 
         .btn-primary {
-            background: #6366f1;
+            background: #3b82f6;
             color: #fff
         }
 
         .btn-primary:hover {
-            background: #4f46e5
+            background: #2563eb
         }
 
         .btn-secondary {
-            background: #e5e7eb;
-            color: #333
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd
         }
 
         .btn-secondary:hover {
-            background: #d1d5db
+            background: #bfdbfe
         }
 
         .btn-small {
@@ -217,8 +225,8 @@
         .skill-item {
             display: inline-block;
             padding: 6px 12px;
-            background: #f0f1ff;
-            color: #6366f1;
+            background: #dbeafe;
+            color: #2563eb;
             border-radius: 20px;
             margin: 5px;
             font-size: 0.85rem
@@ -235,7 +243,7 @@
 
         .progress-fill {
             height: 100%;
-            background: #6366f1;
+            background: #3b82f6;
             transition: width 0.3s
         }
 
@@ -279,7 +287,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: #333
+            color: #1e40af
         }
 
         .form-group input,
@@ -287,9 +295,17 @@
         .form-group select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #93c5fd;
             border-radius: 6px;
             box-sizing: border-box
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2)
         }
 
         .close-modal {
@@ -392,7 +408,7 @@
                         <h3>Full Stack Developer Intern</h3>
                         <p>Innovation Labs</p>
                         <span class="trust-badge trust-high">High Trust</span>
-                        <p>📍 Remote | 💰 ₹15,000/month | ⏰ 6 months</p>
+                        <p> Remote |  ₹15,000/month |  6 months</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Save</button>
                     </div>
@@ -409,7 +425,7 @@
                         <h3>Backend Developer Intern</h3>
                         <p>DataTech Inc.</p>
                         <span class="trust-badge trust-high">High Trust</span>
-                        <p>📍 Bangalore | 💰 ₹20,000/month | ⏰ 6 months</p>
+                        <p> Bangalore |  ₹20,000/month |  6 months</p>
                         <p>Skills: Node.js, MongoDB, Express</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Save</button>
@@ -418,7 +434,7 @@
                         <h3>Data Analyst Intern</h3>
                         <p>Analytics Pro</p>
                         <span class="trust-badge trust-medium">Medium Trust</span>
-                        <p>📍 Mumbai | 💰 ₹12,000/month | ⏰ 3 months</p>
+                        <p> Mumbai |  ₹12,000/month |  3 months</p>
                         <p>Skills: Python, Excel, SQL</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Save</button>
@@ -427,7 +443,7 @@
                         <h3>Marketing Intern</h3>
                         <p>Brand Builders</p>
                         <span class="trust-badge trust-high">High Trust</span>
-                        <p>📍 Delhi | 💰 ₹10,000/month | ⏰ 4 months</p>
+                        <p> Delhi |  ₹10,000/month |  4 months</p>
                         <p>Skills: Social Media, Content Writing</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Save</button>
@@ -470,7 +486,7 @@
                         <h3>Cloud Engineer Intern</h3>
                         <p>CloudTech Systems</p>
                         <span class="trust-badge trust-high">High Trust</span>
-                        <p>📍 Pune | 💰 ₹18,000/month | ⏰ 6 months</p>
+                        <p> Pune |  ₹18,000/month |  6 months</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Remove</button>
                     </div>
@@ -478,7 +494,7 @@
                         <h3>AI/ML Intern</h3>
                         <p>AI Innovations</p>
                         <span class="trust-badge trust-high">High Trust</span>
-                        <p>📍 Hyderabad | 💰 ₹25,000/month | ⏰ 6 months</p>
+                        <p> Hyderabad |  ₹25,000/month |  6 months</p>
                         <button class="btn btn-primary btn-small">Apply Now</button>
                         <button class="btn btn-secondary btn-small">Remove</button>
                     </div>
@@ -584,25 +600,28 @@
                         <h3>JavaScript Fundamentals</h3>
                         <p>20 Questions | 30 Minutes | Beginner Level</p>
                         <p><strong>Your Score:</strong> 85% (Completed)</p>
-                        <button class="btn btn-secondary btn-small">Retake</button>
+                        <a href="quiz.html" class="btn btn-secondary btn-small" style="text-decoration:none">Retake</a>
                     </div>
                     <div class="internship-card">
                         <h3>React.js Basics</h3>
                         <p>25 Questions | 40 Minutes | Intermediate Level</p>
                         <p><strong>Status:</strong> Not Attempted</p>
-                        <button class="btn btn-primary btn-small">Start Quiz</button>
+                        <a href="quiz.html" class="btn btn-primary btn-small" style="text-decoration:none">Start
+                            Quiz</a>
                     </div>
                     <div class="internship-card">
                         <h3>Node.js & Express</h3>
                         <p>30 Questions | 45 Minutes | Intermediate Level</p>
                         <p><strong>Status:</strong> Not Attempted</p>
-                        <button class="btn btn-primary btn-small">Start Quiz</button>
+                        <a href="quiz.html" class="btn btn-primary btn-small" style="text-decoration:none">Start
+                            Quiz</a>
                     </div>
                     <div class="internship-card">
                         <h3>Database Management</h3>
                         <p>20 Questions | 30 Minutes | Beginner Level</p>
                         <p><strong>Status:</strong> Not Attempted</p>
-                        <button class="btn btn-primary btn-small">Start Quiz</button>
+                        <a href="quiz.html" class="btn btn-primary btn-small" style="text-decoration:none">Start
+                            Quiz</a>
                     </div>
                 </div>
             </div>
