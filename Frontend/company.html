@@ -1,398 +1,643 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Company Dashboard - Jobsy</title>
-<link rel="stylesheet" href="style.css">
-<style>
-body{background:#f9fafb}
-.dashboard{display:flex;min-height:100vh}
-.sidebar{width:250px;background:#fff;border-right:1px solid #e5e7eb;position:fixed;height:100vh;overflow-y:auto}
-.sidebar-header{padding:20px;border-bottom:1px solid #e5e7eb}
-.sidebar-header h2{margin:0;color:#6366f1;font-size:1.5rem}
-.nav-menu{list-style:none;padding:0;margin:20px 0}
-.nav-menu li{margin:0}
-.nav-menu a{display:flex;align-items:center;padding:12px 20px;color:#666;text-decoration:none;transition:all 0.2s}
-.nav-menu a:hover,.nav-menu a.active{background:#f0f1ff;color:#6366f1}
-.nav-menu a i{margin-right:10px;width:20px}
-.main-content{margin-left:250px;flex:1;padding:20px}
-.top-bar{background:#fff;padding:15px 20px;border-radius:8px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
-.user-info{display:flex;align-items:center;gap:10px}
-.user-avatar{width:40px;height:40px;border-radius:50%;background:#6366f1;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-bottom:30px}
-.stat-card{background:#fff;padding:20px;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
-.stat-card h3{margin:0 0 10px;font-size:0.9rem;color:#666}
-.stat-card .number{font-size:2rem;font-weight:700;color:#111}
-.section{background:#fff;padding:20px;border-radius:8px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
-.section h2{margin:0 0 20px;font-size:1.5rem;color:#111}
-.internship-card{border:1px solid #e5e7eb;padding:15px;border-radius:8px;margin-bottom:15px}
-.internship-card h3{margin:0 0 10px;color:#111}
-.internship-card p{margin:5px 0;color:#666;font-size:0.9rem}
-.status-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.85rem;font-weight:600}
-.status-active{background:#d1fae5;color:#065f46}
-.status-pending{background:#fef3c7;color:#92400e}
-.status-closed{background:#fee2e2;color:#991b1b}
-.btn{padding:10px 20px;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:all 0.2s}
-.btn-primary{background:#6366f1;color:#fff}
-.btn-primary:hover{background:#4f46e5}
-.btn-secondary{background:#e5e7eb;color:#333}
-.btn-secondary:hover{background:#d1d5db}
-.btn-small{padding:6px 12px;font-size:0.85rem}
-.candidate-item{display:flex;justify-content:space-between;align-items:center;padding:15px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:10px}
-.candidate-info h4{margin:0 0 5px;color:#111}
-.candidate-info p{margin:0;color:#666;font-size:0.85rem}
-.hidden{display:none}
-.form-group{margin-bottom:20px}
-.form-group label{display:block;margin-bottom:8px;font-weight:500;color:#333}
-.form-group input,.form-group textarea,.form-group select{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:6px;box-sizing:border-box}
-@media(max-width:768px){
-.sidebar{width:100%;height:auto;position:relative}
-.main-content{margin-left:0}
-.stats-grid{grid-template-columns:1fr}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Company Dashboard - Jobsy</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: #dbeafe
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #fff;
+            border-right: 1px solid #3b82f6;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #2563eb)
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            color: #fff;
+            font-size: 1.5rem
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0
+        }
+
+        .nav-menu li {
+            margin: 0
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.2s
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: #dbeafe;
+            color: #2563eb
+        }
+
+        .nav-menu a i {
+            margin-right: 10px;
+            width: 20px
+        }
+
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 20px
+        }
+
+        .top-bar {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3)
+        }
+
+        .top-bar h1 {
+            color: #fff
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            color: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #3b82f6
+        }
+
+        .stat-card h3 {
+            margin: 0 0 10px;
+            font-size: 0.9rem;
+            color: #1e40af
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563eb
+        }
+
+        .section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+        }
+
+        .section h2 {
+            margin: 0 0 20px;
+            font-size: 1.5rem;
+            color: #2563eb
+        }
+
+        .internship-card {
+            border: 1px solid #93c5fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: #eff6ff
+        }
+
+        .internship-card h3 {
+            margin: 0 0 10px;
+            color: #1e40af
+        }
+
+        .internship-card p {
+            margin: 5px 0;
+            color: #1e3a8a;
+            font-size: 0.9rem
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600
+        }
+
+        .status-active {
+            background: #d1fae5;
+            color: #065f46
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e
+        }
+
+        .status-closed {
+            background: #fee2e2;
+            color: #991b1b
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: #fff
+        }
+
+        .btn-primary:hover {
+            background: #2563eb
+        }
+
+        .btn-secondary {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd
+        }
+
+        .btn-secondary:hover {
+            background: #bfdbfe
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.85rem
+        }
+
+        .candidate-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: #eff6ff
+        }
+
+        .candidate-info h4 {
+            margin: 0 0 5px;
+            color: #1e40af
+        }
+
+        .candidate-info p {
+            margin: 0;
+            color: #1e3a8a;
+            font-size: 0.85rem
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .form-group {
+            margin-bottom: 20px
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #1e40af
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #93c5fd;
+            border-radius: 6px;
+            box-sizing: border-box
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2)
+        }
+
+        @media(max-width:768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative
+            }
+
+            .main-content {
+                margin-left: 0
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
 </head>
+
 <body>
-<div class="dashboard">
-<aside class="sidebar">
-<div class="sidebar-header">
-<h2>Jobsy</h2>
-</div>
-<ul class="nav-menu">
-<li><a href="#dashboard" class="active" onclick="showSection('dashboard')">📊 Dashboard</a></li>
-<li><a href="#postings" onclick="showSection('postings')">💼 My Postings</a></li>
-<li><a href="#applications" onclick="showSection('applications')">📝 Applications</a></li>
-<li><a href="#candidates" onclick="showSection('candidates')">👥 Candidates</a></li>
-<li><a href="#analytics" onclick="showSection('analytics')">📈 Analytics</a></li>
-<li><a href="#profile" onclick="showSection('profile')">🏢 Company Profile</a></li>
-<li><a href="#post-internship" onclick="showSection('post-internship')">➕ Post Internship</a></li>
-<li><a href="index.html">🚪 Logout</a></li>
-</ul>
-</aside>
-<main class="main-content">
-<div class="top-bar">
-<div>
-<h1 style="margin:0;font-size:1.5rem">Welcome, <span id="companyName">TechCorp</span>!</h1>
-</div>
-<div class="user-info">
-<select id="language">
-<option value="en">English</option>
-<option value="hi">हिन्दी</option>
-<option value="mr">मराठी</option>
-</select>
-<div class="user-avatar">T</div>
-</div>
-</div>
-<div id="dashboard" class="content-section">
-<div class="stats-grid">
-<div class="stat-card">
-<h3>Active Postings</h3>
-<div class="number">8</div>
-</div>
-<div class="stat-card">
-<h3>Total Applications</h3>
-<div class="number">156</div>
-</div>
-<div class="stat-card">
-<h3>Shortlisted</h3>
-<div class="number">24</div>
-</div>
-<div class="stat-card">
-<h3>Hired</h3>
-<div class="number">12</div>
-</div>
-</div>
-<div class="section">
-<h2>Recent Applications</h2>
-<div class="candidate-item">
-<div class="candidate-info">
-<h4>Rahul Sharma</h4>
-<p>Applied for: Frontend Developer Intern</p>
-<p>Skills: React, JavaScript, HTML, CSS</p>
-</div>
-<div>
-<button class="btn btn-primary btn-small">View Profile</button>
-<button class="btn btn-secondary btn-small">Shortlist</button>
-</div>
-</div>
-<div class="candidate-item">
-<div class="candidate-info">
-<h4>Priya Patel</h4>
-<p>Applied for: UI/UX Design Intern</p>
-<p>Skills: Figma, Adobe XD, Prototyping</p>
-</div>
-<div>
-<button class="btn btn-primary btn-small">View Profile</button>
-<button class="btn btn-secondary btn-small">Shortlist</button>
-</div>
-</div>
-</div>
-<div class="section">
-<h2>Active Postings</h2>
-<div class="internship-card">
-<h3>Frontend Developer Intern</h3>
-<span class="status-badge status-active">Active</span>
-<p>📍 Remote | 💰 ₹15,000/month | ⏰ 6 months</p>
-<p><strong>Applications:</strong> 45 | <strong>Views:</strong> 230</p>
-<button class="btn btn-primary btn-small">View Applications</button>
-<button class="btn btn-secondary btn-small">Edit</button>
-</div>
-<div class="internship-card">
-<h3>Backend Developer Intern</h3>
-<span class="status-badge status-active">Active</span>
-<p>📍 Bangalore | 💰 ₹20,000/month | ⏰ 6 months</p>
-<p><strong>Applications:</strong> 38 | <strong>Views:</strong> 180</p>
-<button class="btn btn-primary btn-small">View Applications</button>
-<button class="btn btn-secondary btn-small">Edit</button>
-</div>
-</div>
-</div>
-<div id="postings" class="content-section hidden">
-<div class="section">
-<h2>My Postings</h2>
-<div class="internship-card">
-<h3>Frontend Developer Intern</h3>
-<span class="status-badge status-active">Active</span>
-<p>📍 Remote | 💰 ₹15,000/month | ⏰ 6 months</p>
-<p><strong>Posted:</strong> 5 days ago | <strong>Applications:</strong> 45</p>
-<button class="btn btn-primary btn-small">View Applications</button>
-<button class="btn btn-secondary btn-small">Edit</button>
-<button class="btn btn-secondary btn-small">Close</button>
-</div>
-<div class="internship-card">
-<h3>Backend Developer Intern</h3>
-<span class="status-badge status-active">Active</span>
-<p>📍 Bangalore | 💰 ₹20,000/month | ⏰ 6 months</p>
-<p><strong>Posted:</strong> 10 days ago | <strong>Applications:</strong> 38</p>
-<button class="btn btn-primary btn-small">View Applications</button>
-<button class="btn btn-secondary btn-small">Edit</button>
-<button class="btn btn-secondary btn-small">Close</button>
-</div>
-<div class="internship-card">
-<h3>Data Analyst Intern</h3>
-<span class="status-badge status-closed">Closed</span>
-<p>📍 Mumbai | 💰 ₹12,000/month | ⏰ 3 months</p>
-<p><strong>Posted:</strong> 30 days ago | <strong>Applications:</strong> 73</p>
-<button class="btn btn-secondary btn-small">View Details</button>
-</div>
-</div>
-</div>
-<div id="applications" class="content-section hidden">
-<div class="section">
-<h2>All Applications</h2>
-<div style="margin-bottom:20px">
-<select style="padding:10px;border:1px solid #e5e7eb;border-radius:6px;margin-right:10px">
-<option>All Postings</option>
-<option>Frontend Developer</option>
-<option>Backend Developer</option>
-</select>
-<select style="padding:10px;border:1px solid #e5e7eb;border-radius:6px">
-<option>All Status</option>
-<option>New</option>
-<option>Shortlisted</option>
-<option>Rejected</option>
-</select>
-</div>
-<div class="candidate-item">
-<div class="candidate-info">
-<h4>Rahul Sharma</h4>
-<p>Applied for: Frontend Developer Intern</p>
-<p>Skills: React, JavaScript, HTML, CSS</p>
-<p><strong>Status:</strong> <span style="color:#f59e0b">Under Review</span></p>
-</div>
-<div>
-<button class="btn btn-primary btn-small">View Profile</button>
-<button class="btn btn-secondary btn-small">Shortlist</button>
-<button class="btn btn-secondary btn-small">Reject</button>
-</div>
-</div>
-<div class="candidate-item">
-<div class="candidate-info">
-<h4>Priya Patel</h4>
-<p>Applied for: Frontend Developer Intern</p>
-<p>Skills: React, Vue, TypeScript</p>
-<p><strong>Status:</strong> <span style="color:#10b981">Shortlisted</span></p>
-</div>
-<div>
-<button class="btn btn-primary btn-small">View Profile</button>
-<button class="btn btn-primary btn-small">Schedule Interview</button>
-</div>
-</div>
-<div class="candidate-item">
-<div class="candidate-info">
-<h4>Amit Kumar</h4>
-<p>Applied for: Backend Developer Intern</p>
-<p>Skills: Node.js, MongoDB, Express</p>
-<p><strong>Status:</strong> <span style="color:#f59e0b">Under Review</span></p>
-</div>
-<div>
-<button class="btn btn-primary btn-small">View Profile</button>
-<button class="btn btn-secondary btn-small">Shortlist</button>
-<button class="btn btn-secondary btn-small">Reject</button>
-</div>
-</div>
-</div>
-</div>
-<div id="candidates" class="content-section hidden">
-<div class="section">
-<h2>Shortlisted Candidates</h2>
-<div class="candidate-item">
-<div class="candidate-info">
-<h4>Priya Patel</h4>
-<p>Position: Frontend Developer Intern</p>
-<p>Skills: React, Vue, TypeScript</p>
-<p>Education: B.Tech CSE, 2024</p>
-</div>
-<div>
-<button class="btn btn-primary btn-small">Schedule Interview</button>
-<button class="btn btn-secondary btn-small">Download Resume</button>
-</div>
-</div>
-<div class="candidate-item">
-<div class="candidate-info">
-<h4>Sneha Reddy</h4>
-<p>Position: UI/UX Design Intern</p>
-<p>Skills: Figma, Adobe XD, Prototyping</p>
-<p>Education: B.Des, 2024</p>
-</div>
-<div>
-<button class="btn btn-primary btn-small">Schedule Interview</button>
-<button class="btn btn-secondary btn-small">Download Resume</button>
-</div>
-</div>
-</div>
-</div>
-<div id="analytics" class="content-section hidden">
-<div class="section">
-<h2>Analytics & Insights</h2>
-<div class="stats-grid">
-<div class="stat-card">
-<h3>Total Views</h3>
-<div class="number">1,245</div>
-<p style="color:#10b981;font-size:0.85rem;margin-top:10px">↑ 12% from last month</p>
-</div>
-<div class="stat-card">
-<h3>Application Rate</h3>
-<div class="number">18%</div>
-<p style="color:#10b981;font-size:0.85rem;margin-top:10px">↑ 5% from last month</p>
-</div>
-<div class="stat-card">
-<h3>Avg. Time to Hire</h3>
-<div class="number">21d</div>
-<p style="color:#ef4444;font-size:0.85rem;margin-top:10px">↓ 3 days slower</p>
-</div>
-<div class="stat-card">
-<h3>Trust Score</h3>
-<div class="number">95%</div>
-<p style="color:#10b981;font-size:0.85rem;margin-top:10px">High Trust Rating</p>
-</div>
-</div>
-<div style="margin-top:30px">
-<h3>Top Performing Postings</h3>
-<div class="internship-card">
-<h3>Frontend Developer Intern</h3>
-<p>Views: 230 | Applications: 45 | Conversion: 19.5%</p>
-</div>
-<div class="internship-card">
-<h3>Backend Developer Intern</h3>
-<p>Views: 180 | Applications: 38 | Conversion: 21.1%</p>
-</div>
-</div>
-</div>
-</div>
-<div id="profile" class="content-section hidden">
-<div class="section">
-<h2>Company Profile</h2>
-<div class="form-group">
-<label>Company Name</label>
-<input type="text" value="TechCorp Solutions">
-</div>
-<div class="form-group">
-<label>Email</label>
-<input type="email" value="hr@techcorp.com">
-</div>
-<div class="form-group">
-<label>Phone</label>
-<input type="tel" value="+91 9876543210">
-</div>
-<div class="form-group">
-<label>Company Size</label>
-<select>
-<option>51-200 employees</option>
-<option>1-10 employees</option>
-<option>11-50 employees</option>
-<option>201-1000 employees</option>
-<option>1000+ employees</option>
-</select>
-</div>
-<div class="form-group">
-<label>Industry</label>
-<input type="text" value="Information Technology">
-</div>
-<div class="form-group">
-<label>Website</label>
-<input type="url" value="https://techcorp.com">
-</div>
-<div class="form-group">
-<label>About Company</label>
-<textarea rows="5">Leading IT solutions provider specializing in web and mobile development.</textarea>
-</div>
-<div class="form-group">
-<label>Company Logo</label>
-<input type="file" accept="image/*">
-</div>
-<button class="btn btn-primary">Update Profile</button>
-</div>
-</div>
-<div id="post-internship" class="content-section hidden">
-<div class="section">
-<h2>Post New Internship</h2>
-<div class="form-group">
-<label>Job Title</label>
-<input type="text" placeholder="e.g. Frontend Developer Intern">
-</div>
-<div class="form-group">
-<label>Job Description</label>
-<textarea rows="5" placeholder="Describe the role, responsibilities, and requirements..."></textarea>
-</div>
-<div class="form-group">
-<label>Location</label>
-<input type="text" placeholder="e.g. Bangalore, Remote">
-</div>
-<div class="form-group">
-<label>Stipend (₹/month)</label>
-<input type="number" placeholder="e.g. 15000">
-</div>
-<div class="form-group">
-<label>Duration (months)</label>
-<input type="number" placeholder="e.g. 6">
-</div>
-<div class="form-group">
-<label>Required Skills</label>
-<input type="text" placeholder="e.g. React, JavaScript, HTML, CSS">
-</div>
-<div class="form-group">
-<label>Number of Openings</label>
-<input type="number" placeholder="e.g. 2">
-</div>
-<div class="form-group">
-<label>Application Deadline</label>
-<input type="date">
-</div>
-<button class="btn btn-primary">Post Internship</button>
-</div>
-</div>
-</main>
-</div>
-<script src="script.js"></script>
-<script>
-function showSection(sectionId){
-document.querySelectorAll('.content-section').forEach(s=>s.classList.add('hidden'));
-document.getElementById(sectionId).classList.remove('hidden');
-document.querySelectorAll('.nav-menu a').forEach(a=>a.classList.remove('active'));
-event.target.classList.add('active');
-}
-</script>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Jobsy</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#dashboard" class="active" onclick="showSection('dashboard')">📊 <span data-i18n="dashboard">Dashboard</span></a></li>
+                <li><a href="#postings" onclick="showSection('postings')">💼 <span data-i18n="myPostings">My Postings</span></a></li>
+                <li><a href="#applications" onclick="showSection('applications')">📝 <span data-i18n="applications">Applications</span></a></li>
+                <li><a href="#candidates" onclick="showSection('candidates')">👥 <span data-i18n="candidates">Candidates</span></a></li>
+                <li><a href="#analytics" onclick="showSection('analytics')">📈 <span data-i18n="analytics">Analytics</span></a></li>
+                <li><a href="#profile" onclick="showSection('profile')">🏢 <span data-i18n="companyProfile">Company Profile</span></a></li>
+                <li><a href="#post-internship" onclick="showSection('post-internship')">➕ <span data-i18n="postInternship">Post Internship</span></a></li>
+                <li><a href="index.html">🚪 <span data-i18n="logout">Logout</span></a></li>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <div class="top-bar">
+                <div>
+                    <h1 style="margin:0;font-size:1.5rem"><span data-i18n="welcome">Welcome</span>, <span id="companyName">TechCorp</span>!</h1>
+                </div>
+                <div class="user-info">
+                    <select id="language">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="mr">मराठी</option>
+                    </select>
+                    <div class="user-avatar">T</div>
+                </div>
+            </div>
+            <div id="dashboard" class="content-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 data-i18n="activePostings">Active Postings</h3>
+                        <div class="number">8</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3 data-i18n="totalApplications">Total Applications</h3>
+                        <div class="number">156</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3 data-i18n="shortlisted">Shortlisted</h3>
+                        <div class="number">24</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3 data-i18n="hired">Hired</h3>
+                        <div class="number">12</div>
+                    </div>
+                </div>
+                <div class="section">
+                    <h2 data-i18n="recentApplications">Recent Applications</h2>
+                    <div class="candidate-item">
+                        <div class="candidate-info">
+                            <h4>Rahul Sharma</h4>
+                            <p>Applied for: Frontend Developer Intern</p>
+                            <p>Skills: React, JavaScript, HTML, CSS</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary btn-small">View Profile</button>
+                            <button class="btn btn-secondary btn-small">Shortlist</button>
+                        </div>
+                    </div>
+                    <div class="candidate-item">
+                        <div class="candidate-info">
+                            <h4>Priya Patel</h4>
+                            <p>Applied for: UI/UX Design Intern</p>
+                            <p>Skills: Figma, Adobe XD, Prototyping</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary btn-small">View Profile</button>
+                            <button class="btn btn-secondary btn-small">Shortlist</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <h2 data-i18n="activePostings">Active Postings</h2>
+                    <div class="internship-card">
+                        <h3>Frontend Developer Intern</h3>
+                        <span class="status-badge status-active">Active</span>
+                        <p>📍 Remote | 💰 ₹15,000/month | ⏰ 6 months</p>
+                        <p><strong>Applications:</strong> 45 | <strong>Views:</strong> 230</p>
+                        <button class="btn btn-primary btn-small">View Applications</button>
+                        <button class="btn btn-secondary btn-small">Edit</button>
+                    </div>
+                    <div class="internship-card">
+                        <h3>Backend Developer Intern</h3>
+                        <span class="status-badge status-active">Active</span>
+                        <p>📍 Bangalore | 💰 ₹20,000/month | ⏰ 6 months</p>
+                        <p><strong>Applications:</strong> 38 | <strong>Views:</strong> 180</p>
+                        <button class="btn btn-primary btn-small">View Applications</button>
+                        <button class="btn btn-secondary btn-small">Edit</button>
+                    </div>
+                </div>
+            </div>
+            <div id="postings" class="content-section hidden">
+                <div class="section">
+                    <h2>My Postings</h2>
+                    <div class="internship-card">
+                        <h3>Frontend Developer Intern</h3>
+                        <span class="status-badge status-active">Active</span>
+                        <p>📍 Remote | 💰 ₹15,000/month | ⏰ 6 months</p>
+                        <p><strong>Posted:</strong> 5 days ago | <strong>Applications:</strong> 45</p>
+                        <button class="btn btn-primary btn-small">View Applications</button>
+                        <button class="btn btn-secondary btn-small">Edit</button>
+                        <button class="btn btn-secondary btn-small">Close</button>
+                    </div>
+                    <div class="internship-card">
+                        <h3>Backend Developer Intern</h3>
+                        <span class="status-badge status-active">Active</span>
+                        <p>📍 Bangalore | 💰 ₹20,000/month | ⏰ 6 months</p>
+                        <p><strong>Posted:</strong> 10 days ago | <strong>Applications:</strong> 38</p>
+                        <button class="btn btn-primary btn-small">View Applications</button>
+                        <button class="btn btn-secondary btn-small">Edit</button>
+                        <button class="btn btn-secondary btn-small">Close</button>
+                    </div>
+                    <div class="internship-card">
+                        <h3>Data Analyst Intern</h3>
+                        <span class="status-badge status-closed">Closed</span>
+                        <p>📍 Mumbai | 💰 ₹12,000/month | ⏰ 3 months</p>
+                        <p><strong>Posted:</strong> 30 days ago | <strong>Applications:</strong> 73</p>
+                        <button class="btn btn-secondary btn-small">View Details</button>
+                    </div>
+                </div>
+            </div>
+            <div id="applications" class="content-section hidden">
+                <div class="section">
+                    <h2>All Applications</h2>
+                    <div style="margin-bottom:20px">
+                        <select style="padding:10px;border:1px solid #e5e7eb;border-radius:6px;margin-right:10px">
+                            <option>All Postings</option>
+                            <option>Frontend Developer</option>
+                            <option>Backend Developer</option>
+                        </select>
+                        <select style="padding:10px;border:1px solid #e5e7eb;border-radius:6px">
+                            <option>All Status</option>
+                            <option>New</option>
+                            <option>Shortlisted</option>
+                            <option>Rejected</option>
+                        </select>
+                    </div>
+                    <div class="candidate-item">
+                        <div class="candidate-info">
+                            <h4>Rahul Sharma</h4>
+                            <p>Applied for: Frontend Developer Intern</p>
+                            <p>Skills: React, JavaScript, HTML, CSS</p>
+                            <p><strong>Status:</strong> <span style="color:#f59e0b">Under Review</span></p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary btn-small">View Profile</button>
+                            <button class="btn btn-secondary btn-small">Shortlist</button>
+                            <button class="btn btn-secondary btn-small">Reject</button>
+                        </div>
+                    </div>
+                    <div class="candidate-item">
+                        <div class="candidate-info">
+                            <h4>Priya Patel</h4>
+                            <p>Applied for: Frontend Developer Intern</p>
+                            <p>Skills: React, Vue, TypeScript</p>
+                            <p><strong>Status:</strong> <span style="color:#10b981">Shortlisted</span></p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary btn-small">View Profile</button>
+                            <button class="btn btn-primary btn-small">Schedule Interview</button>
+                        </div>
+                    </div>
+                    <div class="candidate-item">
+                        <div class="candidate-info">
+                            <h4>Amit Kumar</h4>
+                            <p>Applied for: Backend Developer Intern</p>
+                            <p>Skills: Node.js, MongoDB, Express</p>
+                            <p><strong>Status:</strong> <span style="color:#f59e0b">Under Review</span></p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary btn-small">View Profile</button>
+                            <button class="btn btn-secondary btn-small">Shortlist</button>
+                            <button class="btn btn-secondary btn-small">Reject</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="candidates" class="content-section hidden">
+                <div class="section">
+                    <h2>Shortlisted Candidates</h2>
+                    <div class="candidate-item">
+                        <div class="candidate-info">
+                            <h4>Priya Patel</h4>
+                            <p>Position: Frontend Developer Intern</p>
+                            <p>Skills: React, Vue, TypeScript</p>
+                            <p>Education: B.Tech CSE, 2024</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary btn-small">Schedule Interview</button>
+                            <button class="btn btn-secondary btn-small">Download Resume</button>
+                        </div>
+                    </div>
+                    <div class="candidate-item">
+                        <div class="candidate-info">
+                            <h4>Sneha Reddy</h4>
+                            <p>Position: UI/UX Design Intern</p>
+                            <p>Skills: Figma, Adobe XD, Prototyping</p>
+                            <p>Education: B.Des, 2024</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary btn-small">Schedule Interview</button>
+                            <button class="btn btn-secondary btn-small">Download Resume</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="analytics" class="content-section hidden">
+                <div class="section">
+                    <h2>Analytics & Insights</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Views</h3>
+                            <div class="number">1,245</div>
+                            <p style="color:#10b981;font-size:0.85rem;margin-top:10px">↑ 12% from last month</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Application Rate</h3>
+                            <div class="number">18%</div>
+                            <p style="color:#10b981;font-size:0.85rem;margin-top:10px">↑ 5% from last month</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Avg. Time to Hire</h3>
+                            <div class="number">21d</div>
+                            <p style="color:#ef4444;font-size:0.85rem;margin-top:10px">↓ 3 days slower</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Trust Score</h3>
+                            <div class="number">95%</div>
+                            <p style="color:#10b981;font-size:0.85rem;margin-top:10px">High Trust Rating</p>
+                        </div>
+                    </div>
+                    <div style="margin-top:30px">
+                        <h3>Top Performing Postings</h3>
+                        <div class="internship-card">
+                            <h3>Frontend Developer Intern</h3>
+                            <p>Views: 230 | Applications: 45 | Conversion: 19.5%</p>
+                        </div>
+                        <div class="internship-card">
+                            <h3>Backend Developer Intern</h3>
+                            <p>Views: 180 | Applications: 38 | Conversion: 21.1%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="profile" class="content-section hidden">
+                <div class="section">
+                    <h2>Company Profile</h2>
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" value="TechCorp Solutions">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" value="hr@techcorp.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" value="+91 9876543210">
+                    </div>
+                    <div class="form-group">
+                        <label>Company Size</label>
+                        <select>
+                            <option>51-200 employees</option>
+                            <option>1-10 employees</option>
+                            <option>11-50 employees</option>
+                            <option>201-1000 employees</option>
+                            <option>1000+ employees</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Industry</label>
+                        <input type="text" value="Information Technology">
+                    </div>
+                    <div class="form-group">
+                        <label>Website</label>
+                        <input type="url" value="https://techcorp.com">
+                    </div>
+                    <div class="form-group">
+                        <label>About Company</label>
+                        <textarea
+                            rows="5">Leading IT solutions provider specializing in web and mobile development.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Company Logo</label>
+                        <input type="file" accept="image/*">
+                    </div>
+                    <button class="btn btn-primary">Update Profile</button>
+                </div>
+            </div>
+            <div id="post-internship" class="content-section hidden">
+                <div class="section">
+                    <h2>Post New Internship</h2>
+                    <div class="form-group">
+                        <label>Job Title</label>
+                        <input type="text" placeholder="e.g. Frontend Developer Intern">
+                    </div>
+                    <div class="form-group">
+                        <label>Job Description</label>
+                        <textarea rows="5"
+                            placeholder="Describe the role, responsibilities, and requirements..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" placeholder="e.g. Bangalore, Remote">
+                    </div>
+                    <div class="form-group">
+                        <label>Stipend (₹/month)</label>
+                        <input type="number" placeholder="e.g. 15000">
+                    </div>
+                    <div class="form-group">
+                        <label>Duration (months)</label>
+                        <input type="number" placeholder="e.g. 6">
+                    </div>
+                    <div class="form-group">
+                        <label>Required Skills</label>
+                        <input type="text" placeholder="e.g. React, JavaScript, HTML, CSS">
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Openings</label>
+                        <input type="number" placeholder="e.g. 2">
+                    </div>
+                    <div class="form-group">
+                        <label>Application Deadline</label>
+                        <input type="date">
+                    </div>
+                    <button class="btn btn-primary">Post Internship</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
 </body>
+
 </html>
