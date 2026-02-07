@@ -5,163 +5,48 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title data-i18n="registerHeading">Register</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            background: #f0f2f5;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        a {
-            text-decoration: none;
-            color: #007bff;
-            transition: color 0.3s;
-        }
-
-        a:hover {
-            color: #0056b3;
-            text-decoration: underline;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s;
-            cursor: pointer;
-            text-align: center;
-            border: none;
-        }
-
-        .btn.primary {
-            background-color: #007bff;
-            color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
-        }
-
-        .btn.primary:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        .btn.secondary {
-            background-color: #4CAF50;
-            color: white;
-            margin-top: -10px;
-            margin-bottom: 20px;
-            width: auto;
-        }
-
-        .btn.secondary:hover {
-            background-color: #45a049;
-        }
-
-        .site-header {
-            background-color: #fff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            padding: 15px 0;
-        }
-
-        .site-header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #6366f1;
-            text-decoration: none;
-        }
-
-        .actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        #langSelect {
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
-
         .main {
-            min-height: calc(100vh - 120px);
+            min-height: calc(100vh - 80px);
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px 0;
-        }
-
-        input {
-            width: 96%;
-            padding: 10px;
-            margin-top: 5px;
-            font-size: 1rem;
+            padding: 20px 0
         }
 
         .card {
-            background-color: #fff;
+            background: #fff;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             border-radius: 12px;
             padding: 40px;
             width: 100%;
-            max-width: 400px;
+            max-width: 400px
         }
 
         .register-card {
             max-width: 650px;
-            padding: 40px;
+            padding: 40px
         }
 
         .register-card h2 {
             text-align: center;
             color: #333;
-            margin-top: 0;
-            margin-bottom: 30px;
+            margin: 0 0 30px;
             font-size: 2em;
-            font-weight: 700;
+            font-weight: 700
+        }
+
+        .register-card h3 {
+            color: #333;
+            margin: 20px 0 15px;
+            font-size: 1.2em;
+            font-weight: 600
         }
 
         .register-card form {
             display: flex;
-            flex-direction: column;
-        }
-
-        .work-experience-item .remove-work-experience {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            float: right;
-            margin-bottom: 10px;
-        }
-
-        .work-experience-item .remove-work-experience:hover {
-            background-color: #d32f2f;
+            flex-direction: column
         }
 
         .register-card label {
@@ -169,7 +54,7 @@
             flex-direction: column;
             font-weight: 500;
             color: #555;
-            margin-bottom: 25px;
+            margin-bottom: 25px
         }
 
         .register-card input,
@@ -180,6 +65,8 @@
             border-radius: 6px;
             font-size: 1em;
             margin-top: 8px;
+            width: 100%;
+            box-sizing: border-box
         }
 
         .register-card input:focus,
@@ -187,82 +74,125 @@
         .register-card textarea:focus {
             outline: none;
             border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2)
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-align: center;
+            border: none
+        }
+
+        .btn.primary {
+            background: #007bff;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+            width: 100%;
+            margin-top: 10px
+        }
+
+        .btn.primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px)
+        }
+
+        .btn.secondary {
+            background: #4CAF50;
+            color: #fff;
+            margin: 10px 0 20px;
+            width: auto
+        }
+
+        .btn.secondary:hover {
+            background: #45a049
+        }
+
+        .work-experience-item {
+            border: 1px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative
+        }
+
+        .work-experience-item .remove-work-experience {
+            background: #f44336;
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            float: right;
+            margin-bottom: 10px
+        }
+
+        .work-experience-item .remove-work-experience:hover {
+            background: #d32f2f
         }
 
         .form-switch {
             text-align: center;
             margin-top: 25px;
-            font-size: 0.9em;
+            font-size: 0.9em
+        }
+
+        .form-switch a {
+            color: #007bff;
+            text-decoration: none
+        }
+
+        .form-switch a:hover {
+            text-decoration: underline
+        }
+
+        .hidden {
+            display: none
         }
 
         .footer {
-            background-color: #004080;
-            color: white;
+            background: #004080;
+            color: #fff;
             text-align: center;
             padding: 20px 0;
-            margin-top: auto;
+            margin-top: auto
         }
 
         .footer p {
             margin: 0;
-            font-size: 0.9em;
-        }
-
-        .hidden {
-            display: none;
+            font-size: 0.9em
         }
 
         @media(max-width:768px) {
-            .container.main {
-                padding: 20px 15px;
+            .main {
+                padding: 20px 15px
             }
 
             .register-card {
                 width: 100%;
-                padding: 20px;
-            }
-
-            .site-header .container {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px 15px;
-            }
-
-            .actions {
-                display: flex;
-                justify-content: flex-end;
-                width: 100%;
-                margin-top: -45px;
-            }
-
-            .actions select {
-                width: auto;
-                min-width: 120px;
-                padding: 6px 10px;
-            }
-
-            input {
-                width: 90%;
+                padding: 20px
             }
 
             .btn {
                 width: 100%;
                 padding: 12px;
-                margin-top: 10px;
+                margin-top: 10px
             }
         }
     </style>
 </head>
 
 <body>
-    <header class="site-header">
-        <div class="container">
-            <div class="brand">
-                <a href="index.html" class="logo">Jobsy</a>
-            </div>
-            <div class="actions">
-                <select id="langSelect">
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">Jobsy</a>
+            <div class="right-section">
+                <select id="language">
                     <option value="en">English</option>
                     <option value="hi">हिन्दी</option>
                     <option value="mr">मराठी</option>
@@ -270,7 +200,7 @@
             </div>
         </div>
     </header>
-    <main class="container main">
+    <main class="main">
         <div class="card register-card">
             <h2 data-i18n="registerHeading">Register</h2>
             <form id="registerForm">
