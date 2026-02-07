@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="loginPageTitle">Login - Jobsy</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9fafb;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-card h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #111;
+            font-size: 2rem;
+        }
+
+        .login-card label {
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .login-card label span {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .login-card input,
+        .login-card select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .login-card button {
+            width: 100%;
+            padding: 12px;
+            background: #6366f1;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .login-card button:hover {
+            background: #4f46e5;
+        }
+
+        .form-switch {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .form-switch a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .logo-header {
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-header h1 {
+            color: #6366f1;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .lang-select {
+            padding: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-header">
+                <h1>Jobsy</h1>
+                <select id="language" class="lang-select">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="mr">मराठी</option>
+                </select>
+            </div>
+            <h2 data-i18n="loginHeading">Login</h2>
+            <form id="loginForm">
+                <label>
+                    <span data-i18n="roleLabel">Role</span>
+                    <select id="role">
+                        <option value="candidate" data-i18n="candidate">Candidate</option>
+                        <option value="company" data-i18n="company">Company</option>
+                        <option value="government" data-i18n="government">Government</option>
+                    </select>
+                </label>
+                <label>
+                    <span data-i18n="idLabel">Email or Mobile</span>
+                    <input type="text" id="email" data-i18n="emailMobilePlaceholder" placeholder="Enter email or mobile"
+                        required>
+                </label>
+                <label>
+                    <span data-i18n="passwordLabel">Password</span>
+                    <input type="password" id="password" data-i18n="passwordPlaceholder" placeholder="Enter password"
+                        required>
+                </label>
+                <button type="submit" data-i18n="loginBtn">Login</button>
+            </form>
+            <div class="form-switch">
+                <p><span data-i18n="noAccountText">Don't have an account?</span> <a href="register.html"
+                        data-i18n="registerHereLink">Register here</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script>document.addEventListener("DOMContentLoaded", () => {
+    const authForm = document.getElementById("authForm");
+    const roleSelect = document.getElementById("roleSelect");
+    const langSelect = document.getElementById("langSelect");
+
+    authForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const role = roleSelect.value;
+        const userId = document.getElementById("userId").value;
+        const password = document.getElementById("password").value;
+
+        try {
+            const response = await fetch("http://localhost:3400/api/signin", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: userId, password:password, role:role }),
+                credentials: "include"
+            });
+
+            const data = await response.json();
+            console.log("Login response:", data);
+
+            if (data.success) {
+                if (data.role === "candidate") {
+                    window.location.href = "candidate.html";
+                } else if (data.role === "company") {
+                    window.location.href = "company.html";
+                } else if (data.role === "government") {
+                    window.location.href = "government.html";
+                } else {
+                    alert("Unknown role, cannot redirect");
+                }
+            } else {
+                alert(data.message || "Login failed. Please check credentials.");
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            alert("Error connecting to server. Please try again later.");
+        }
+    });
+
+    langSelect.addEventListener("change", (event) => {
+        const selectedLang = event.target.value;
+        localStorage.setItem("appLang", selectedLang);
+        window.location.reload();
+    });
+});
+
+    </script>
+</body>
+
+</html>
