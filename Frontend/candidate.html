@@ -1,1 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PMIntern Dashboard</title>
+    <link rel="stylesheet" href="css/candidate.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
 
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <div class="logo">PM<span data-i18n="logoIntern">Intern</span></div>
+            </div>
+            <div class="actions">
+                <div class="profile-dropdown">
+                    <button class="profile-btn" id="profileBtn">
+                        <img src="css/background.jpg" alt="Profile" class="profile-avatar" />
+                    </button>
+                    <div class="dropdown-content" id="profileDropdown">
+                        <a href="#" id="viewProfileLink" data-i18n="viewProfileLink">View Profile</a>
+                        <a href="#" id="editProfileLink" data-i18n="editProfileLink">Edit Profile</a>
+                        <a href="internships.html" data-i18n="internshipsLink">Internships</a>
+                        <a href="login.html" data-i18n="logoutBtn" onClick="logout()">Logout</a>
+                    </div>
+                </div>
+                <select id="langSelect" aria-label="Language">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="mr">मराठी</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main">
+        <div class="dashboard-content" id="dashboardContent">
+            <section class="welcome-section">
+                <div class="welcome-message">
+                    <h2 data-i18n="welcomeMsg" id="wel">Welcome, Pratap! 👋</h2>
+                    <p data-i18n="welcomeSubtext">Track your internship journey and discover new opportunities</p>
+                    <button class="btn btn-primary" data-i18n="findInternshipsBtn"><i class="fas fa-search"></i> Find New Internships</button>
+                </div>
+                <div class="profile-completion-card">
+                    <div class="completion-details">
+                        <div class="completion-text" data-i18n="profileCompletionText">Profile Completion</div>
+                        <div class="completion-percent">85% Complete</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 85%;"></div>
+                    </div>
+                    <button class="btn btn-link" data-i18n="completeProfileBtn">Complete Profile</button>
+                </div>
+            </section>
+
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon applications"><i class="far fa-file-alt"></i></div>
+                    <div class="stat-data">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label" data-i18n="applicationsStatLabel">Applications</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon shortlisted"><i class="fas fa-check"></i></div>
+                    <div class="stat-data">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label" data-i18n="shortlistedStatLabel">Shortlisted</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon profile-match"><i class="fas fa-star"></i></div>
+                    <div class="stat-data">
+                        <div class="stat-number">90%</div>
+                        <div class="stat-label" data-i18n="profileMatchStatLabel">Profile Match</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="applications-section">
+                <div class="section-header">
+                    <h3 data-i18n="yourApplicationsHeading">Your Applications</h3>
+                    <a href="#" class="view-all" data-i18n="viewAllLink">View All</a>
+                </div>
+                <div class="application-list">
+                    <div class="application-card">
+                        <div class="application-info">
+                            <h4>Software Developer Intern</h4>
+                            <p class="company">Tech Solutions Pvt Ltd</p>
+                            <p class="location-date">
+                                <i class="fas fa-map-marker-alt"></i> Mumbai &nbsp;&nbsp;
+                                <i class="fas fa-calendar-alt"></i> 2024-01-15
+                            </p>
+                        </div>
+                        <div class="application-status under-review" data-i18n="underReviewStatus">Under Review</div>
+                    </div>
+                    <div class="application-card">
+                        <div class="application-info">
+                            <h4>Digital Marketing Intern</h4>
+                            <p class="company">Creative Agency Ltd</p>
+                            <p class="location-date">
+                                <i class="fas fa-map-marker-alt"></i> Delhi &nbsp;&nbsp;
+                                <i class="fas fa-calendar-alt"></i> 2024-01-12
+                            </p>
+                        </div>
+                        <div class="application-status shortlisted" data-i18n="shortlistedStatus">Shortlisted</div>
+                    </div>
+                    <div class="application-card">
+                        <div class="application-info">
+                            <h4>Data Analyst Intern</h4>
+                            <p class="company">Analytics Corp</p>
+                            <p class="location-date">
+                                <i class="fas fa-map-marker-alt"></i> Bangalore &nbsp;&nbsp;
+                                <i class="fas fa-calendar-alt"></i> 2024-01-10
+                            </p>
+                        </div>
+                        <div class="application-status rejected" data-i18n="rejectedStatus">Rejected</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="main-content hidden" id="viewProfileSection">
+            <h2 class="form-section-heading" data-i18n="myProfileHeading">My Profile</h2>
+            <div class="profile-view-card card">
+                <div class="profile-header">
+                    <img src="https://via.placeholder.com/150" alt="Profile" class="profile-view-photo" id="profileViewPhoto" />
+                    <h3 id="profileViewName">Pratap Sanap</h3>
+                    <p class="profile-view-info"><i class="fas fa-envelope"></i> pratapsanap14@example.com</p>
+                    <p class="profile-view-info"><i class="fas fa-link"></i> <a href="#" id="profileViewPortfolio">linkedin.com/in/pratapsanap1</a></p>
+                </div>
+                
+                <div class="profile-details-section">
+                    <h4 data-i18n="profDetailsHeading">Professional Details</h4>
+                    <div class="detail-group">
+                        <strong data-i18n="resumeLabel">Resume:</strong> <a href="file:///C:/Users/Pratap/OneDrive/Dokumen/Pratap_sanap_Resume.pdf" id="profileViewResume">View Resume.pdf</a>
+                    </div>
+                </div>
+
+                <div class="profile-details-section">
+                    <h4 data-i18n="eduBackgroundHeading">Educational Background</h4>
+                    <div class="detail-group">
+                        <strong data-i18n="universityLabel">University/College:</strong> <span id="profileViewUniversity">SCOE</span>
+                    </div>
+                    <div class="detail-group">
+                        <strong data-i18n="majorLabel">Major:</strong> <span id="profileViewMajor">Computer Science</span>
+                    </div>
+                    <div class="detail-group">
+                        <strong data-i18n="gradYearLabel">Graduation Year:</strong> <span id="profileViewGraduationYear">2027</span>
+                    </div>
+                </div>
+                
+                <div class="profile-details-section">
+                    <h4 data-i18n="skillsInterestsHeading">Skills & Interests</h4>
+                    <div class="detail-group">
+                        <strong data-i18n="skillsLabel">Skills:</strong> <span id="profileViewSkills">Python, Data Analysis, HTML, CSS</span>
+                    </div>
+                    <div class="detail-group">
+                        <strong data-i18n="stipendLabel">Stipend Expectation:</strong> <span id="profileViewStipend">₹20,000/month</span>
+                    </div>
+                    <div class="detail-group">
+                        <strong data-i18n="locationLabel">Location Preference:</strong> <span id="profileViewLocation">Pune, Bengaluru</span>
+                    </div>
+                </div>
+
+                <div class="profile-details-section">
+                    <h4 data-i18n="workExpHeading">Work Experience</h4>
+                    <div id="profileViewExperienceContainer" class="experience-list">
+                    </div>
+                </div>
+
+                <button class="profilebtn" id="editProfileFromViewBtn" data-i18n="editProfileFromViewBtn"><i class="fas fa-edit"></i> Edit Profile</button>
+            </div>
+        </div>
+
+        <div class="main-content hidden" id="editProfileSection">
+            <h2 class="form-section-heading" data-i18n="editProfileHeading">Edit Profile</h2>
+            <form id="profileForm" class="card">
+                <div class="form-group profile-photo-upload">
+                    <img src="https://via.placeholder.com/150" alt="Profile" class="edit-profile-photo" id="profilePhotoPreview" />
+                    <div class="photo-actions">
+                        <input type="file" id="photoInput" accept="image/*" class="hidden-file-input" />
+                        <button type="button" id="changePhotoBtn" class="btn btn-secondary" data-i18n="changePhotoBtn">Change Photo</button>
+                        <button type="button" id="removePhotoBtn" class="btn btn-danger" data-i18n="removePhotoBtn">Remove Photo</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><span data-i18n="nameLabel">Name</span><input id="userName" placeholder="full name" required /></label>
+                </div>
+                <div class="form-group">
+                    <label><span data-i18n="emailMobileLabel">Email or Mobile</span><input id="userId" placeholder="email or mobile" required /></label>
+                </div>
+                <div id="candidateFields">
+                    <h3 class="form-section-heading" data-i18n="profDetailsSubheading">Professional Details</h3>
+                    <div class="form-group">
+                        <label><span data-i18n="uploadResumeLabel">Upload Resume/CV (PDF only)</span><input type="file" id="resumeUpload" accept=".pdf" /></label>
+                    </div>
+                    <div class="form-group">
+                        <label><span data-i18n="portfolioUrlLabel">Portfolio/LinkedIn URL</span><input type="url" id="portfolioUrl" placeholder="e.g., https://linkedin.com/in/username" /></label>
+                    </div>
+                    <h3 class="form-section-heading" data-i18n="eduBackgroundSubheading">Educational Background</h3>
+                    <div class="form-group">
+                        <label><span data-i18n="eduLevelLabel">Education Level</span><select id="educationLevel">
+                            <option value="" data-i18n="selectLevelOption">Select Level</option>
+                            <option value="10th" data-i18n="tenthPassOption">10th Pass</option>
+                            <option value="12th" data-i18n="twelfthPassOption">12th Pass</option>
+                            <option value="diploma" data-i18n="diplomaOption">Diploma</option>
+                            <option value="graduate" data-i18n="graduateOption">Graduate</option>
+                            <option value="postgraduate" data-i18n="postgraduateOption">Postgraduate</option>
+                        </select></label>
+                    </div>
+                    <div class="form-group">
+                        <label><span data-i18n="universityInputLabel">University/College</span><input type="text" id="university" placeholder="e.g., University of Mumbai" /></label>
+                    </div>
+                    <div class="form-group">
+                        <label><span data-i18n="majorInputLabel">Major/Field of Study</span><input type="text" id="major" placeholder="e.g., Computer Science" /></label>
+                    </div>
+                    <div class="form-group">
+                        <label><span data-i18n="gradYearInputLabel">Year of Graduation</span><input type="number" id="graduationYear" placeholder="e.g., 2025" min="1900" max="2100" /></label>
+                    </div>
+                    <h3 class="form-section-heading" data-i18n="skillsInterestsSubheading">Skills and Interests</h3>
+                    <div class="form-group">
+                        <label><span data-i18n="skillsInputLabel">Your Skills (comma-separated)</span><input type="text" id="skills" placeholder="e.g., Python, Data Analysis, HTML, CSS" /></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="stipend" data-i18n="stipendInputLabel">Stipend Expectation</label>
+                        <input type="number" id="stipend" name="stipend" placeholder="e.g., 20000" required />
+                    </div>
+                    <h3 class="form-section-heading" data-i18n="workExpSubheading">Work Experience</h3>
+                    <div id="workExperienceContainer"></div>
+                    <button type="button" id="addWorkExperienceBtn" class="btn btn-secondary" data-i18n="addNewExperienceBtn">Add New Experience</button>
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label><span data-i18n="locationInputLabel">Location Preference</span><input type="text" id="locationPreference" placeholder="e.g., Pune, Bengaluru" /></label>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" data-i18n="saveProfileBtn">Save Profile</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEditBtn" data-i18n="cancelEditBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <aside class="sidebar-right">
+            <section class="recommended-section card">
+                <h4 data-i18n="recommendedTitle">Recommended for You ✨</h4>
+                <div class="recommendation-list" id="recc">  
+                </div>
+            </section>
+
+            <section class="quick-actions card">
+                <h4 data-i18n="quickActionsTitle">Quick Actions 🚀</h4>
+                <ul>
+                    <li><a href="#" data-i18n="downloadResumeLink"><i class="fas fa-download"></i> Download Resume</a></li>
+                    <li><a href="#" data-i18n="settingsLink"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="#" data-i18n="helpLink"><i class="fas fa-question-circle"></i> Help & Support</a></li>
+                </ul>
+            </section>
+        </aside>
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 PM Internship Recommendation — By Team Buildzen.</p>
+    </footer>
+
+    <script type="module" src="js/common.js"></script>
+    <script src="js/candidate.js"></script>
+</body>
+</html>
