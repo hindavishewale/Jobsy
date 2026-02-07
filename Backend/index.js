@@ -5,7 +5,10 @@ const path=require("path");
 const jwt = require('jsonwebtoken');
 const cookieParser = require("cookie-parser");
 
-
+const route=require("./Routes/userRoutes");
+const bertRoute=require("./Routes/routes");
+const getData=require("./Routes/getData");
+const pdf=require("./2");
 
 const app=express();
 
@@ -77,6 +80,21 @@ app.get("/candidate.html",validateUser,(req,res)=>{
     res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', `candidate.html`));
 })
 
+app.get("/cart.html",validateUser,(req,res)=>{
+    res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', `cart.html`));
+})
+
+app.get("/delivery.html",validateUser,(req,res)=>{
+    res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', `delivery.html`));
+})
+
+app.get("/wishlist.html",validateUser,(req,res)=>{
+    res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', `wishlist.html`));
+})
+
+app.get("/profile.html",validateUser,(req,res)=>{
+    res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', `profile.html`));
+})
 
 app.use(express.static(path.join(__dirname, '..','pm_dashboards_v2')));
 
@@ -97,11 +115,28 @@ app.get("/admin",(req,res)=>{
 
 app.use("/api/parse-resume",pdf);
 app.use("/api",route);
-
+app.use("/bert",bertRoute);
+app.use("/getData",getData)
 
 
 app.get('/:page', (req, res) => {
-   
+    console.log("hello world");
+    if(req.params.page=="order")
+    {
+        res.redirect("/order.html");
+    }else if(req.params.page=="cart")
+    {
+        res.redirect("/cart.html");
+    }else if(req.params.page=="wishlist")
+    {
+        res.redirect("/wishlist.html");
+    }else if(req.params.page=="delivery")
+    {
+        res.redirect("/delivery.html");
+    }else if(req.params.page=="profile")
+    {
+        res.redirect("/profile.html");
+    }
     // console.log("page :: ",req.params.page);
     if (req.params.page.includes('.'))
         {
