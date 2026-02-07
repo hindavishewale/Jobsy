@@ -8,27 +8,44 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .login-container {
-            min-height: calc(100vh - 80px);
+            min-height: calc(105vh - 80px);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #f9fafb;
-            padding: 20px
+            background: url('Images/Background.jpeg') no-repeat center center;
+            background-size: cover;
+            padding: 20px;
+            position: relative
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(56, 73, 182, 0.6);
+            z-index: 0
         }
 
         .login-card {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             max-width: 400px;
-            width: 100%
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2)
         }
 
         .login-card h2 {
             text-align: center;
             margin-bottom: 30px;
-            color: #111;
+            color: #000000;
             font-size: 2rem
         }
 
@@ -41,23 +58,29 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: #333
+            color: #000000
         }
 
         .login-card input,
         .login-card select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 6px;
-            font-size: 1rem
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: #000000
+        }
+
+        .login-card input::placeholder {
+            color: rgba(255, 255, 255, 0.6)
         }
 
         .login-card button {
             width: 100%;
             padding: 12px;
             background: #6366f1;
-            color: #fff;
+            color: #000000;
             border: none;
             border-radius: 6px;
             font-size: 1rem;
@@ -73,11 +96,11 @@
         .form-switch {
             text-align: center;
             margin-top: 20px;
-            color: #666
+            color: #fff
         }
 
         .form-switch a {
-            color: #6366f1;
+            color: #000000;
             text-decoration: none;
             font-weight: 500
         }
