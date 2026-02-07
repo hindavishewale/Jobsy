@@ -395,5 +395,147 @@
                 <a href="candidate.html" class="btn btn-secondary" style="text-decoration:none">Back to Dashboard</a>
             </div>
         </div>
-    </div></body>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        const questions = [
+            { q: "What is JavaScript?", options: ["A programming language for web development", "A markup language", "A database management system", "An operating system"], correct: 0 },
+            { q: "Which symbol is used for comments in JavaScript?", options: ["//", "/* */", "Both // and /* */", "#"], correct: 2 },
+            { q: "What is the correct way to declare a variable?", options: ["var x = 5", "variable x = 5", "v x = 5", "declare x = 5"], correct: 0 },
+            { q: "Which method is used to print in console?", options: ["console.log()", "print()", "echo()", "display()"], correct: 0 },
+            { q: "What does DOM stand for?", options: ["Document Object Model", "Data Object Model", "Digital Object Model", "Document Oriented Model"], correct: 0 },
+            { q: "Which operator is used for equality check?", options: ["=", "==", "===", "!="], correct: 2 },
+            { q: "What is the result of 2 + '2' in JavaScript?", options: ["4", "22", "Error", "NaN"], correct: 1 },
+            { q: "Which keyword is used to define a function?", options: ["function", "func", "def", "method"], correct: 0 },
+            { q: "What is an array in JavaScript?", options: ["A collection of elements", "A single value", "A function", "A loop"], correct: 0 },
+            { q: "Which method adds an element to the end of an array?", options: ["push()", "pop()", "shift()", "unshift()"], correct: 0 }
+        ];
+        let currentQuestion = 0;
+        let answers = [];
+        let startTime;
+        let timerInterval;
+        function startQuiz() {
+            document.getElementById('quizStart').classList.add('hidden');
+            document.getElementById('quizQuestion').classList.remove('hidden');
+            currentQuestion = 0;
+            answers = new Array(questions.length).fill(null);
+            startTime = Date.now();
+            startTimer();
+            loadQuestion();
+        }
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            document.getElementById('questionText').textContent = q.q;
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const label = document.createElement('label');
+                label.className = 'option';
+                if (answers[currentQuestion] === i) label.classList.add('selected');
+                label.innerHTML = `<input type="radio" name="answer" value="${i}" ${answers[currentQuestion] === i ? 'checked' : ''}>${opt}`;
+                label.onclick = () => selectAnswer(i);
+                container.appendChild(label);
+            });
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1 ? 'Submit Quiz' : 'Next';
+            updateProgress();
+        }
+        function selectAnswer(index) {
+            answers[currentQuestion] = index;
+            document.querySelectorAll('.option').forEach((opt, i) => {
+                opt.classList.toggle('selected', i === index);
+            });
+        }
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                submitQuiz();
+            }
+        }
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+        function startTimer() {
+            let timeLeft = 900;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const mins = Math.floor(timeLeft / 60);
+                const secs = timeLeft % 60;
+                document.getElementById('timer').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            let correct = 0;
+            answers.forEach((ans, i) => {
+                if (ans === questions[i].correct) correct++;
+            });
+            const score = Math.round((correct / questions.length) * 100);
+            const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(timeTaken / 60);
+            const secs = timeTaken % 60;
+            document.getElementById('quizQuestion').classList.add('hidden');
+            document.getElementById('quizResult').classList.remove('hidden');
+            document.getElementById('finalScore').textContent = score + '%';
+            document.getElementById('correctAnswers').textContent = correct;
+            document.getElementById('wrongAnswers').textContent = questions.length - correct;
+            document.getElementById('timeTaken').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+            if (score >= 70) {
+                document.getElementById('resultMessage').textContent = 'Excellent! You passed the quiz.';
+            } else {
+                document.getElementById('resultMessage').textContent = 'Keep practicing! You can retake the quiz.';
+            }
+        }
+        function retakeQuiz() {
+            document.getElementById('quizResult').classList.add('hidden');
+            document.getElementById('answerReview').classList.add('hidden');
+            document.getElementById('quizStart').classList.remove('hidden');
+        }
+        function viewAnswers() {
+            document.getElementById('quizResult').classList.add('hidden');
+            document.getElementById('answerReview').classList.remove('hidden');
+            const container = document.getElementById('reviewContainer');
+            container.innerHTML = '';
+            questions.forEach((q, i) => {
+                const div = document.createElement('div');
+                div.className = 'review-question';
+                const userAnswer = answers[i];
+                const correctAnswer = q.correct;
+                let html = `<h3>Question ${i + 1}: ${q.q}</h3>`;
+                q.options.forEach((opt, j) => {
+                    let className = 'review-option';
+                    if (j === correctAnswer) className += ' correct';
+                    if (j === userAnswer && j !== correctAnswer) className += ' wrong';
+                    if (j === userAnswer) className += ' user-answer';
+                    let label = '';
+                    if (j === correctAnswer) label = ' ✓ Correct Answer';
+                    if (j === userAnswer && j !== correctAnswer) label = ' ✗ Your Answer';
+                    html += `<div class="${className}">${opt}${label}</div>`;
+                });
+                if (userAnswer === null) html += `<p style="color:#ef4444;margin-top:10px">You did not answer this question.</p>`;
+                div.innerHTML = html;
+                container.appendChild(div);
+            });
+        }
+        function backToResults() {
+            document.getElementById('answerReview').classList.add('hidden');
+            document.getElementById('quizResult').classList.remove('hidden');
+        }
+    </script>
+</body>
+
 </html>
