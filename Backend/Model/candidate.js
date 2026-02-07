@@ -1,0 +1,69 @@
+const mongoose=require('mongoose');
+
+mongoose.connect("mongodb://127.0.0.1:27017/SIH")
+.then(()=>{console.log("Mongo connected for candidate")})
+.catch((err)=>console.log("error of mongo candidate : ",err))
+
+const candidateSchema=new mongoose.Schema({
+    Name:{
+        type:String,
+        required:true,
+    },
+
+    Email:{
+        type:String,
+        required:true
+    },
+    Resume:{
+        type:String,
+        required:true
+    },
+    Portfolio:{
+        type:String,
+        required:true
+    },
+
+    Linkedin:{
+        type:String,
+        required:true
+    },
+    Education:{
+        type:String,
+        required:true
+    },
+    College:{
+        type:String,
+        required:true
+    },
+    Major:{
+        type:String,
+        required:true
+    },
+    Year:{
+        type:String,
+        required:true
+    },
+    Skills:{
+        type:String,
+        required:true
+    },
+    Location:{
+        type:String,
+        required:true
+    },
+    Password:{
+        type:String,
+        required:true
+    },
+    ConPassword:{
+        type:String,
+        required:true
+    }
+});
+
+const candidateModel=mongoose.model("candidate",candidateSchema);
+
+module.exports=candidateModel;
+
+
+
