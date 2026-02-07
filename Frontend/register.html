@@ -12,16 +12,34 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px 0
+            padding: 20px 0;
+            background: url('Images/Background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            position: relative
+        }
+
+        .main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(56, 73, 182, 0.6);
+            z-index: 0
         }
 
         .card {
-            background: #fff;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             border-radius: 12px;
             padding: 40px;
             width: 100%;
-            max-width: 400px
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2)
         }
 
         .register-card {
@@ -31,14 +49,14 @@
 
         .register-card h2 {
             text-align: center;
-            color: #333;
+            color: #000000;
             margin: 0 0 30px;
             font-size: 2em;
             font-weight: 700
         }
 
         .register-card h3 {
-            color: #333;
+            color: #000000;
             margin: 20px 0 15px;
             font-size: 1.2em;
             font-weight: 600
@@ -53,7 +71,7 @@
             display: flex;
             flex-direction: column;
             font-weight: 500;
-            color: #555;
+            color: #000000;
             margin-bottom: 25px
         }
 
@@ -61,12 +79,19 @@
         .register-card select,
         .register-card textarea {
             padding: 12px;
-            border: 1px solid #ccc;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 6px;
             font-size: 1em;
             margin-top: 8px;
             width: 100%;
-            box-sizing: border-box
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.1);
+            color: #000000
+        }
+
+        .register-card input::placeholder,
+        .register-card textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6)
         }
 
         .register-card input:focus,
@@ -139,11 +164,12 @@
         .form-switch {
             text-align: center;
             margin-top: 25px;
-            font-size: 0.9em
+            font-size: 0.9em;
+            color: #fff
         }
 
         .form-switch a {
-            color: #007bff;
+            color: #000000;
             text-decoration: none
         }
 
