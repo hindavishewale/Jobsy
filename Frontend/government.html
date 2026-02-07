@@ -22,7 +22,9 @@
             border-right: 1px solid #3b82f6;
             position: fixed;
             height: 100vh;
-            overflow-y: auto
+            overflow-y: auto;
+            transition: transform 0.3s;
+            z-index: 1000
         }
 
         .sidebar-header {
@@ -92,6 +94,21 @@
             display: flex;
             align-items: center;
             gap: 10px
+        }
+
+        .mobile-user-info {
+            display: none;
+            padding: 15px 20px;
+            border-bottom: 1px solid #dbeafe;
+            gap: 10px;
+            align-items: center
+        }
+
+        .mobile-user-info select {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #93c5fd;
+            border-radius: 6px
         }
 
         .user-avatar {
@@ -278,6 +295,28 @@
             display: none
         }
 
+        .menu-toggle {
+            display: none;
+            background: #fff;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            color: #3b82f6
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999
+        }
+
+        .overlay.active {
+            display: block
+        }
+
         .form-group {
             margin-bottom: 20px
         }
@@ -328,9 +367,12 @@
 
         @media(max-width:768px) {
             .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative
+                transform: translateX(-100%);
+                width: 250px
+            }
+
+            .sidebar.active {
+                transform: translateX(0)
             }
 
             .main-content {
@@ -340,31 +382,72 @@
             .stats-grid {
                 grid-template-columns: 1fr
             }
+
+            .menu-toggle {
+                display: block
+            }
+
+            .mobile-user-info {
+                display: flex
+            }
+
+            .user-info {
+                display: none
+            }
+
+            .top-bar {
+                flex-wrap: wrap
+            }
+
+            .top-bar h1 {
+                font-size: 1rem !important
+            }
+
+            .table {
+                font-size: 0.85rem;
+                display: block;
+                overflow-x: auto
+            }
+
+            .table th,
+            .table td {
+                padding: 8px
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="dashboard">
-        <aside class="sidebar">
+        <div class="overlay" id="overlay"></div>
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h2>Jobsy</h2>
             </div>
+            <div class="mobile-user-info">
+                <div class="user-avatar">G</div>
+                <select id="languageMobile">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="mr">मराठी</option>
+                </select>
+            </div>
             <ul class="nav-menu">
-                <li><a href="#dashboard" class="active" onclick="showSection('dashboard')">📊 Dashboard</a></li>
-                <li><a href="#fraud-reports" onclick="showSection('fraud-reports')">🚨 Fraud Reports</a></li>
-                <li><a href="#companies" onclick="showSection('companies')">🏢 Companies</a></li>
-                <li><a href="#verification" onclick="showSection('verification')">✅ Verification Queue</a></li>
-                <li><a href="#analytics" onclick="showSection('analytics')">📈 Analytics</a></li>
-                <li><a href="#regional" onclick="showSection('regional')">🗺️ Regional Data</a></li>
-                <li><a href="#actions" onclick="showSection('actions')">⚡ Actions Taken</a></li>
-                <li><a href="index.html">🚪 Logout</a></li>
+                <li><a href="#dashboard" class="active" onclick="showSection('dashboard')">📊 <span data-i18n="dashboard">Dashboard</span></a></li>
+                <li><a href="#fraud-reports" onclick="showSection('fraud-reports')">🚨 <span data-i18n="fraudReports">Fraud Reports</span></a></li>
+                <li><a href="#companies" onclick="showSection('companies')">🏢 <span data-i18n="companies">Companies</span></a></li>
+                <li><a href="#verification" onclick="showSection('verification')">✅ <span data-i18n="verificationQueue">Verification Queue</span></a></li>
+                <li><a href="#analytics" onclick="showSection('analytics')">📈 <span data-i18n="analytics">Analytics</span></a></li>
+                <li><a href="#regional" onclick="showSection('regional')">🗺️ <span data-i18n="regionalData">Regional Data</span></a></li>
+                <li><a href="#actions" onclick="showSection('actions')">⚡ <span data-i18n="actionsTaken">Actions Taken</span></a></li>
+                <li><a href="index.html">🚪 <span data-i18n="logout">Logout</span></a></li>
             </ul>
         </aside>
         <main class="main-content">
             <div class="top-bar">
-                <div>
-                    <h1 style="margin:0;font-size:1.5rem">Government Monitoring Dashboard</h1>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1 style="margin:0;font-size:1.5rem" data-i18n="governmentMonitoring">Government Monitoring Dashboard</h1>
                 </div>
                 <div class="user-info">
                     <select id="language">
@@ -378,26 +461,26 @@
             <div id="dashboard" class="content-section">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h3>Total Companies</h3>
+                        <h3 data-i18n="totalCompanies">Total Companies</h3>
                         <div class="number">1,245</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Fraud Reports</h3>
+                        <h3 data-i18n="fraudReports">Fraud Reports</h3>
                         <div class="number">87</div>
                         <p style="color:#ef4444;font-size:0.85rem;margin-top:10px">23 pending review</p>
                     </div>
                     <div class="stat-card">
-                        <h3>Verified Companies</h3>
+                        <h3 data-i18n="verifiedCompanies">Verified Companies</h3>
                         <div class="number">1,158</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Actions Taken</h3>
+                        <h3 data-i18n="actionsTaken">Actions Taken</h3>
                         <div class="number">34</div>
                         <p style="color:#10b981;font-size:0.85rem;margin-top:10px">This month</p>
                     </div>
                 </div>
                 <div class="section">
-                    <h2>Recent Fraud Reports</h2>
+                    <h2 data-i18n="recentFraudReports">Recent Fraud Reports</h2>
                     <div class="report-card">
                         <span class="severity-high">High Severity</span>
                         <h3>Fake Payment Request</h3>
@@ -420,7 +503,7 @@
                     </div>
                 </div>
                 <div class="section">
-                    <h2>Pending Verifications</h2>
+                    <h2 data-i18n="pendingVerifications">Pending Verifications</h2>
                     <div class="company-card">
                         <h3>Digital Innovations Pvt Ltd</h3>
                         <span class="status-badge status-pending">Pending Verification</span>
@@ -694,6 +777,31 @@
             document.getElementById(sectionId).classList.remove('hidden');
             document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
             event.target.classList.add('active');
+        }
+
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Sync mobile language selector with desktop
+        const langMobile = document.getElementById('languageMobile');
+        const langDesktop = document.getElementById('language');
+        if (langMobile && langDesktop) {
+            langMobile.value = localStorage.getItem('appLang') || 'en';
+            langMobile.addEventListener('change', (e) => {
+                langDesktop.value = e.target.value;
+                langDesktop.dispatchEvent(new Event('change'));
+            });
         }
     </script>
 </body>
