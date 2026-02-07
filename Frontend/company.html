@@ -22,7 +22,9 @@
             border-right: 1px solid #3b82f6;
             position: fixed;
             height: 100vh;
-            overflow-y: auto
+            overflow-y: auto;
+            transition: transform 0.3s;
+            z-index: 1000
         }
 
         .sidebar-header {
@@ -92,6 +94,21 @@
             display: flex;
             align-items: center;
             gap: 10px
+        }
+
+        .mobile-user-info {
+            display: none;
+            padding: 15px 20px;
+            border-bottom: 1px solid #dbeafe;
+            gap: 10px;
+            align-items: center
+        }
+
+        .mobile-user-info select {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #93c5fd;
+            border-radius: 6px
         }
 
         .user-avatar {
@@ -248,6 +265,28 @@
             display: none
         }
 
+        .menu-toggle {
+            display: none;
+            background: #fff;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            color: #3b82f6
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999
+        }
+
+        .overlay.active {
+            display: block
+        }
+
         .form-group {
             margin-bottom: 20px
         }
@@ -279,9 +318,12 @@
 
         @media(max-width:768px) {
             .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative
+                transform: translateX(-100%);
+                width: 250px
+            }
+
+            .sidebar.active {
+                transform: translateX(0)
             }
 
             .main-content {
@@ -291,15 +333,50 @@
             .stats-grid {
                 grid-template-columns: 1fr
             }
+
+            .menu-toggle {
+                display: block
+            }
+
+            .mobile-user-info {
+                display: flex
+            }
+
+            .user-info {
+                display: none
+            }
+
+            .top-bar {
+                flex-wrap: wrap
+            }
+
+            .top-bar h1 {
+                font-size: 1.2rem !important
+            }
+
+            .candidate-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="dashboard">
-        <aside class="sidebar">
+        <div class="overlay" id="overlay"></div>
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h2>Jobsy</h2>
+            </div>
+            <div class="mobile-user-info">
+                <div class="user-avatar">T</div>
+                <select id="languageMobile">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="mr">मराठी</option>
+                </select>
             </div>
             <ul class="nav-menu">
                 <li><a href="#dashboard" class="active" onclick="showSection('dashboard')">📊 <span data-i18n="dashboard">Dashboard</span></a></li>
@@ -314,7 +391,8 @@
         </aside>
         <main class="main-content">
             <div class="top-bar">
-                <div>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
                     <h1 style="margin:0;font-size:1.5rem"><span data-i18n="welcome">Welcome</span>, <span id="companyName">TechCorp</span>!</h1>
                 </div>
                 <div class="user-info">
@@ -636,6 +714,29 @@
             document.getElementById(sectionId).classList.remove('hidden');
             document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
             event.target.classList.add('active');
+        }
+
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        const langMobile = document.getElementById('languageMobile');
+        const langDesktop = document.getElementById('language');
+        if (langMobile && langDesktop) {
+            langMobile.value = localStorage.getItem('appLang') || 'en';
+            langMobile.addEventListener('change', (e) => {
+                langDesktop.value = e.target.value;
+                langDesktop.dispatchEvent(new Event('change'));
+            });
         }
     </script>
 </body>
