@@ -7,6 +7,19 @@
     <title data-i18n="loginPageTitle">Login - Jobsy</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 100px;
+            width: auto;
+        }
+
         .login-container {
             min-height: calc(105vh - 80px);
             display: flex;
@@ -114,7 +127,10 @@
 <body>
     <header>
         <div class="header-container">
-            <a href="index.html" class="logo"><img src="Images/logo.jpeg" alt="Logo" style="height: 30px; vertical-align: middle; margin-right: 8px;">Jobsy</a>
+            <a href="index.html" class="logo">
+                <img src="Images/logo.jpeg" alt="Logo">
+                Jobsy
+            </a>
             <div class="right-section">
                 <select id="language" class="lang-select">
                     <option value="en">English</option>
@@ -124,6 +140,7 @@
             </div>
         </div>
     </header>
+
     <div class="login-container">
         <div class="login-card">
             <h2 data-i18n="loginHeading">Login</h2>
@@ -136,28 +153,35 @@
                         <option value="government" data-i18n="government">Government</option>
                     </select>
                 </label>
+
                 <label>
                     <span data-i18n="idLabel">Email or Mobile</span>
-                    <input type="text" id="email" data-i18n="emailMobilePlaceholder" placeholder="Enter email or mobile"
-                        required>
+                    <input type="text" id="email" data-i18n="emailMobilePlaceholder"
+                        placeholder="Enter email or mobile" required>
                 </label>
+
                 <label>
                     <span data-i18n="passwordLabel">Password</span>
-                    <input type="password" id="password" data-i18n="passwordPlaceholder" placeholder="Enter password"
-                        required>
+                    <input type="password" id="password" data-i18n="passwordPlaceholder"
+                        placeholder="Enter password" required>
                 </label>
+
                 <button type="submit" data-i18n="loginBtn">Login</button>
             </form>
+
             <div class="form-switch">
-                <p><span data-i18n="noAccountText">Don't have an account?</span> <a href="register.html"
-                        data-i18n="registerHereLink">Register here</a></p>
+                <p><span data-i18n="noAccountText">Don't have an account?</span>
+                    <a href="register.html" data-i18n="registerHereLink">Register here</a>
+                </p>
             </div>
         </div>
     </div>
+
     <script src="script.js"></script>
     <script>
-        document.getElementById("email").value="";
-            document.getElementById("password").value="";
+        document.getElementById("email").value = "";
+        document.getElementById("password").value = "";
+
         document.addEventListener("DOMContentLoaded", () => {
             const loginForm = document.getElementById("loginForm");
             const roleSelect = document.getElementById("role");
@@ -200,10 +224,7 @@
                     }
                 });
             }
-            
         });
-
     </script>
 </body>
-
 </html>
