@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
-
-mongoose.connect("mongodb://127.0.0.1:27017/SIH")
+mongoose.connect("mongodb://127.0.0.1:27017/Jobsy")
 .then(()=>{console.log("Mongo connected for internships")})
 .catch((err)=>console.log("error of mongo internships : ",err))
-
 const internshipSchema = new mongoose.Schema(
   {
     internshipTitle: {
@@ -15,7 +13,7 @@ const internshipSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-    }, 
+    },
     location: {
       type: String,
       required: true,
@@ -32,7 +30,7 @@ const internshipSchema = new mongoose.Schema(
       trim: true,
     },
     eligibility: {
-      type: [String], // store as array of skills
+      type: [String],
       required: true,
       set: (eligibility) => eligibility.map((s) => s.trim()),
     },
@@ -45,18 +43,17 @@ const internshipSchema = new mongoose.Schema(
       required: true,
     },
     skills: {
-      type: [String], // store as array of skills
+      type: [String],
       required: true,
-      set: (skills) => skills.map((s) => s.trim()), // trims each skill
+      set: (skills) => skills.map((s) => s.trim()),
+    },
+    status: {
+      type: String,
+      enum: ['Active', 'Inactive'],
+      default: 'Active'
     }
-    // postedBy: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "User", // Assuming internships are posted by a user
-    // },
   },
   { timestamps: true }
 );
-
 const InternshipModel=mongoose.model("Internship", internshipSchema);
-
 module.exports=InternshipModel;
