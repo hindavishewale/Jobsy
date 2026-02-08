@@ -1,4 +1,3 @@
-// Controllers/handler.js (top imports)
 const candidateModel = require("../Model/candidate");
 const Internship=require("../Model/internships");
 const jwt = require("jsonwebtoken");
@@ -7,13 +6,7 @@ const path = require("path");
 const multer = require("multer");
 const bcrypt = require("bcryptjs");
 const company=require("../Model/company");
-
-const sec = process.env.secret_key || "yoursecret"; // use JWT_SECRET
-// ... multer storage config remains the same ...
-
-// ---------------------
-// Multer Setup
-// ---------------------
+const sec = process.env.secret_key || "yoursecret";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, "../uploads/resumes");
@@ -25,19 +18,10 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${file.fieldname}${ext}`);
   },
 });
-
 const upload = multer({ storage });
-
-// ---------------------
-// Add Candidate
-// ---------------------
 const addData = async (req, res) => {
   try {
     const body = req.body;
-
-    // // Parse Work array from frontend
-    // const workArray = body.Work ? JSON.parse(body.Work) : [];
-
     const newCandidate = await candidateModel.create({
       Name: body.Name,
       Email: body.Email,
@@ -49,32 +33,25 @@ const addData = async (req, res) => {
       Major: body.Major,
       Year: body.Year,
       Skills: body.Skills,
-    //   Work: workArray,
       Location: body.Location,
       Password: body.Password,
       ConPassword: body.ConPassword,
     });
-
-    // JWT token
     const token = jwt.sign({ Email: body.Email }, sec, { expiresIn: "5h" });
-
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // true if HTTPS
+      secure: false,
       sameSite: "strict",
     });
-
     res.status(201).send("Candidate registered successfully");
   } catch (err) {
     console.error("Candidate registration failed:", err);
     res.status(400).send("Candidate registration failed!");
   }
 };
-
 const addCompany = async (req, res) => {
   try {
     const body = req.body;
-
     const newCompany = await company.create({
       CompanyName: body.CompanyName,
       CompanySize: body.CompanySize,
@@ -85,30 +62,23 @@ const addCompany = async (req, res) => {
       Password: body.Password,
       ConPassword: body.ConPassword
     });
-
-    // JWT token
     const token = jwt.sign({ Email: body.Email }, sec, { expiresIn: "5h" });
-
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // true in prod
+      secure: false,
       sameSite: "strict",
     });
-
     res.status(201).send("Company registered successfully");
   } catch (err) {
     console.error("Company registration failed:", err);
     res.status(400).send("Company registration failed!");
   }
 };
-
 const loginUser = async (req, res) => {
   const { email, password, role } = req.body;
   console.log("email:", email, " pass:", password, " role:", role);
-
   try {
     let user;
-
     if (role === "candidate") {
       user = await candidateModel.findOne({ Email: email });
     } else if (role === "company") {
@@ -120,26 +90,18 @@ const loginUser = async (req, res) => {
     } else {
       return res.status(400).json({ success: false, message: "Invalid role" });
     }
-
     if (!user) {
       return res.status(404).json({ success: false, message: "User not registered" });
     }
-
-    // compare password (plain for now, bcrypt recommended)
     if (user.Password !== password) {
       return res.status(400).json({ success: false, message: "Invalid credentials" });
     }
-
-    // issue JWT
      const token = jwt.sign({ email: email }, sec, { expiresIn: "5h" });
-
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // true in prod
+      secure: false,
       sameSite: "strict",
     });
-
-
     return res.json({
       success: true,
       message: "Login successful",
@@ -150,46 +112,67 @@ const loginUser = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error during login" });
   }
 };
-
 const addInternship = async (req, res) => {
   try {
     const body = req.body;
-
     const newInternship = await Internship.create({
       internshipTitle: body.internshipTitle,
       companyName:body.name,
       location: body.location,
       stipend: body.stipend,
       stream: body.stream,
-      eligibility: body.eligibility, // can be array or string
+      eligibility: body.eligibility,
       applicationDeadline: body.applicationDeadline,
       description: body.description,
-      skills: body.skills, // should be array
+      skills: body.skills,
     });
-
     res.status(201).send("Internship created successfully");
   } catch (err) {
     console.error("Internship creation failed:", err);
     res.status(400).send("Failed to create internship");
   }
 };
-
-
-
 const loader=async (req,res)=>{
-    const target=req.user;
-    const info=await candidateModel.findOne({Email:target.email});
-    res.send(info);
+const target=req.user;
+const candidate=await candidateModel.findOne({Email:target.email});
+if(candidate){
+return res.json(candidate);
 }
-
-// module.exports = { loginUser };
-
-
+const comp=await company.findOne({Email:target.email});
+if(comp){
+return res.json(comp);
+}
+res.status(404).json({error:"User not found"});
+}
+const updateProfile=async(req,res)=>{
+const target=req.user;
+const updates=req.body;
+try{
+const candidate=await candidateModel.findOneAndUpdate(
+{Email:target.email},
+{$set:updates},
+{new:true,runValidators:false,upsert:false}
+);
+if(candidate){
+return res.json({message:"Profile updated successfully"});
+}
+const comp=await company.findOneAndUpdate(
+{Email:target.email},
+{$set:updates},
+{new:true,runValidators:false,upsert:false}
+);
+if(comp){
+return res.json({message:"Profile updated successfully"});
+}
+res.status(404).json({error:"User not found"});
+}catch(err){
+console.error("Update error:",err);
+res.status(500).json({error:err.message});
+}
+}
 const userSpecific = (req, res) => {
     res.redirect(`/${req.params.pge}`);
 }
-
-
 const admin=(req,res)=>{
     const target=req.user;
     if(target.email == process.env.admin_email)
@@ -199,12 +182,10 @@ const admin=(req,res)=>{
         res.send("Not Authorized !");
     }
 }
-
 const getData=async (req,res)=>{
     const total=await user.countDocuments();
     res.json({User:total});
 }
-
 const getCustomers=async (req,res)=>{
     try{
         const data=await user.find({});
@@ -214,17 +195,27 @@ const getCustomers=async (req,res)=>{
         res.send("can't load customers data");
     }
 }
-
 const logout=(req,res)=>{
     res.clearCookie("token", {
         httpOnly: true,
-        secure: true, 
+        secure: true,
         sameSite: "strict"
     });
-    // res.send("Logged out successfully");
     res.redirect("/index");
 }
-
+const getCandidateByEmail=async(req,res)=>{
+const {email}=req.query;
+try{
+const candidate=await candidateModel.findOne({Email:email});
+if(!candidate){
+return res.status(404).json({error:"Candidate not found"});
+}
+res.json(candidate);
+}catch(err){
+console.error("Error fetching candidate:",err);
+res.status(500).json({error:err.message});
+}
+}
 const contact=async (req,res)=>{
     const body=req.body;
     try{
@@ -236,7 +227,6 @@ const contact=async (req,res)=>{
             Date:body.date,
             Status:body.status
         })
-
         res.send("Your message has been sent");
     }catch(err)
     {
@@ -244,14 +234,10 @@ const contact=async (req,res)=>{
         res.send("Unable to send the message ! Try again later");
     }
 }
-
 const getContact=async (req,res)=>{
-    
     const data=await con.find({});
     res.json(data);
 }
-
-
 const changeStatus=async (req,res)=>{
     const body=req.body;
     try{
@@ -261,15 +247,12 @@ const changeStatus=async (req,res)=>{
             {new:true}
         );
         res.send("changed !");
-
     }catch(err)
     {
         res.send(err);
     }
     console.log("stats : ",body);
-    
 }
-
 const deletemesg=async (req,res)=>{
     const body=req.body;
     try{
@@ -294,7 +277,9 @@ module.exports = {
   getContact,
   changeStatus,
   deletemesg,
-  upload, // <-- include upload here
+  upload,
   addCompany,
-  addInternship
+  addInternship,
+  updateProfile,
+  getCandidateByEmail
 };
