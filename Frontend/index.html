@@ -7,12 +7,56 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+.logo {
+    font-size: 2rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: float 3s ease-in-out infinite;
+    position: relative;
+}
+
+.logo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    animation: shimmer 2s infinite;
+}
+
+.logo img {
+    height: 50px;
+    width: auto;
+    filter: drop-shadow(0 0 15px rgba(8, 7, 4, 0.6)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.4));
+    animation: sparkle 1.5s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes sparkle {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(167, 166, 160, 0.6)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.4)); }
+    50% { filter: drop-shadow(0 0 25px rgb(143, 142, 133)) drop-shadow(0 0 35px rgba(255, 255, 255, 0.8)); }
+}
+</style>
 </head>
 <body>
 <div id="mainOverlay" class="overlay"></div>
 <header>
 <div class="header-container">
-<a href="#" class="logo">Jobsy</a>
+<a href="#" class="logo"><img src="Images/logo.png" alt="Logo">Jobsy</a>
 <div class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('active');document.getElementById('mainOverlay').classList.toggle('active')">☰</div>
 <nav>
 <a href="#home" data-i18n="homeLink">Home</a>
