@@ -323,10 +323,58 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2)
         }
 
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center
+        }
+
+        .modal.active {
+            display: flex
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3)
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #666;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s
+        }
+
+        .close-modal:hover {
+            color: #2563eb
+        }
+
         @media(max-width:768px) {
             .sidebar {
                 transform: translateX(-100%);
                 width: 250px
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+                max-height: 90vh
             }
 
             .sidebar.active {
@@ -467,29 +515,8 @@
             <div id="candidates" class="content-section hidden">
                 <div class="section">
                     <h2>Shortlisted Candidates</h2>
-                    <div class="candidate-item">
-                        <div class="candidate-info">
-                            <h4>Priya Patel</h4>
-                            <p>Position: Frontend Developer Intern</p>
-                            <p>Skills: React, Vue, TypeScript</p>
-                            <p>Education: B.Tech CSE, 2024</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary btn-small">Schedule Interview</button>
-                            <button class="btn btn-secondary btn-small">Download Resume</button>
-                        </div>
-                    </div>
-                    <div class="candidate-item">
-                        <div class="candidate-info">
-                            <h4>Sneha Reddy</h4>
-                            <p>Position: UI/UX Design Intern</p>
-                            <p>Skills: Figma, Adobe XD, Prototyping</p>
-                            <p>Education: B.Des, 2024</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary btn-small">Schedule Interview</button>
-                            <button class="btn btn-secondary btn-small">Download Resume</button>
-                        </div>
+                    <div id="shortlistedContainer">
+                        <p style="text-align:center;color:#666;">No shortlisted candidates yet</p>
                     </div>
                 </div>
             </div>
