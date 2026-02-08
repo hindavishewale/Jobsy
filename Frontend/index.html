@@ -32,8 +32,6 @@
 .logo img {
     height: 50px;
     width: auto;
-    filter: drop-shadow(0 0 15px rgba(8, 7, 4, 0.6)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.4));
-    animation: sparkle 1.5s ease-in-out infinite;
 }
 
 @keyframes float {
@@ -47,8 +45,8 @@
 }
 
 @keyframes sparkle {
-    0%, 100% { filter: drop-shadow(0 0 15px rgba(167, 166, 160, 0.6)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.4)); }
-    50% { filter: drop-shadow(0 0 25px rgb(143, 142, 133)) drop-shadow(0 0 35px rgba(255, 255, 255, 0.8)); }
+    0%, 100% { filter: none; }
+    50% { filter: brightness(1.2); }
 }
 </style>
 </head>
