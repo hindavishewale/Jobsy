@@ -314,7 +314,7 @@
                 <label><span data-i18n="confirmPasswordLabel">Confirm Password</span>
                     <input id="confirmPassword" type="password" required />
                 </label>
-                <button type="submit" class="btn primary" data-i18n="registerBtn">Register</button>
+                <button type="submit" class="btn primary">Register</button>
             </form>
             <div class="form-switch">
                 <p><span data-i18n="haveAccountText">Already have an account?</span>
@@ -423,7 +423,7 @@
                     e.target.closest(".work-experience-item").remove();
                 }
             });
-            registerForm.addEventListener("submit", (e) => {
+            registerForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
                 const password = document.getElementById("password").value;
                 const confirmPassword = document.getElementById("confirmPassword").value;
@@ -431,10 +431,82 @@
                     alert("Passwords do not match!");
                     return;
                 }
-                alert("Registration successful!");
-                window.location.href = "login.html";
+                const role = roleSelect.value;
+                const formData = new FormData();
+                if (role === "candidate") {
+                    formData.append("Name", document.getElementById("userName").value);
+                    formData.append("Email", document.getElementById("userId").value);
+                    formData.append("Password", password);
+                    formData.append("ConPassword", confirmPassword);
+                    formData.append("Portfolio", document.getElementById("portfolioUrl").value);
+                    formData.append("Education", document.getElementById("educationLevel").value);
+                    formData.append("College", document.getElementById("university").value);
+                    formData.append("Major", document.getElementById("major").value);
+                    formData.append("Year", document.getElementById("graduationYear").value);
+                    formData.append("Skills", document.getElementById("skills").value);
+                    formData.append("Location", document.getElementById("locationPreference").value);
+                    const resumeFile = document.getElementById("resumeUpload").files[0];
+                    if (resumeFile) formData.append("Resume", resumeFile);
+                    try {
+                        const res = await fetch("http://localhost:3400/api/signup", {
+                            method: "POST",
+                            body: formData
+                        });
+                        const text = await res.text();
+                        if (res.ok) {
+                            alert("Registration successful!");
+                            window.location.href = "candidate.html";
+                        } else {
+                            alert("Registration failed: " + text);
+                        }
+                    } catch (err) {
+                        alert("Error: " + err.message);
+                    }
+                } else {
+                    const data = {
+                        CompanyName: document.getElementById("companyName").value.trim(),
+                        CompanySize: document.getElementById("companySize").value,
+                        Industry: document.getElementById("industry").value.trim(),
+                        Website: document.getElementById("websiteUrl").value.trim(),
+                        ContactPerson: document.getElementById("contactPerson").value.trim(),
+                        Email: document.getElementById("userId").value.trim(),
+                        Password: password,
+                        ConPassword: confirmPassword
+                    };
+
+                    // Basic validation
+                    if (!data.CompanyName || !data.Email || !data.Password) {
+                        alert("Please fill all required company fields");
+                        return;
+                    }
+
+                    try {
+                        const res = await fetch("http://localhost:3400/api/signup/company", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            credentials: "include", // important for cookie
+                            body: JSON.stringify(data)
+                        });
+
+                        const text = await res.text();
+
+                        if (res.ok) {
+                            alert("Company registered successfully!");
+                            window.location.href = "company.html";
+                        } else {
+                            alert("Registration failed: " + text);
+                        }
+                    } catch (err) {
+                        alert("Server error: " + err.message);
+                    }
+                }
+
             });
         });
+
+        function submitForm() {
+
+        }
     </script>
 </body>
 
