@@ -1,12 +1,21 @@
-// Routes/route.js
 const express = require("express");
 const handler = require("../Controllers/getData");
-
 const router = express.Router();
-
 router.get("/getCompany",handler.comp);
-
-router.get("/getInternships",handler.internships);
-
-
+router.get("/getInternships",handler.getInternships);
+router.get("/getCompanyInternships",handler.getCompanyInternships);
+router.post("/postInternship",handler.postInternship);
+router.get("/getGovStats",handler.getGovStats);
+router.get("/getRecentFraudReports",handler.getRecentFraudReports);
+router.get("/getPendingCompanies",handler.getPendingCompanies);
+router.post("/approveCompany",handler.approveCompany);
+router.post("/rejectCompany",handler.rejectCompany);
+router.post("/submitFraudReport",handler.submitFraudReport);
+router.get("/getAllFraudReports",handler.getAllFraudReports);
+router.get("/getAllCompanies",handler.getAllCompanies);
+router.get("/getAnalytics",handler.getAnalytics);
+router.get("/getRegionalData",handler.getRegionalData);
+router.get("/getActionsTaken",handler.getActionsTaken);
+router.post("/updateInternshipStatus",handler.updateInternshipStatus);
+router.post("/updateInternship",handler.updateInternship);
 module.exports = router;
