@@ -1,31 +1,25 @@
-require("dotenv").config();   
-
+require("dotenv").config();
 const express=require("express");
 const path=require("path");
 const jwt = require('jsonwebtoken');
 const cookieParser = require("cookie-parser");
-
 const route=require("./Routes/userRoutes");
 const bertRoute=require("./Routes/routes");
 const getData=require("./Routes/getData");
+const applicationRoutes=require("./Routes/applicationRoutes");
+const quizRoutes=require("./Routes/quizRoutes");
+const notificationRoutes=require("./Routes/notificationRoutes");
 const pdf=require("./2");
-
 const app=express();
-
 const sec = process.env.secret_key;
-
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-
 function validateUser(req, res, next) {
     const token = req.cookies.token;
     if (!token) return res.redirect("/login");
-
     jwt.verify(token, sec, (err, user) => {
-
         if (err) {
             res.clearCookie("token", {
                 httpOnly: true,
@@ -33,10 +27,9 @@ function validateUser(req, res, next) {
                 sameSite: "strict"
             });
             console.log("validation error : ",err);
-
             return res.sendStatus(403);
         };
-        req.user = user; // decoded payload
+        req.user = user;
         console.log("data from token:", user);
         console.log("user.email :", user.email);
         console.log("password :",user.password)
@@ -46,7 +39,6 @@ function validateUser(req, res, next) {
 function validateAdmin(req, res, next) {
     const token = req.cookies.token;
     if (!token) return res.redirect("/login");
-
     jwt.verify(token, sec, (err, user) => {
         if (err) {
             res.clearCookie("token", {
@@ -54,71 +46,54 @@ function validateAdmin(req, res, next) {
                 secure: true,
                 sameSite: "strict"
             });
-
             return res.sendStatus(403);
         };
-        req.user = user; // decoded payload
+        req.user = user;
         console.log("data from token:", user);
         console.log("user.email :", user.email);
         if(user.email==process.env.GOV_EMAIL)
         {
-
             next();
         }else{
-            // res.send("access forbidden !");
             res.sendStatus(403).send("Access Forbidden");
         }
     });
 }
-
 app.get("/government.html",validateAdmin,(req,res)=>{
-    res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', `government.html`));
-    // res.send("admin page");
+    res.sendFile(path.join(__dirname, '..', 'Frontend', `government.html`));
 })
-
 app.get("/candidate.html",validateUser,(req,res)=>{
-    res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', `candidate.html`));
+    res.sendFile(path.join(__dirname, '..', 'Frontend', `candidate.html`));
 })
-
 app.get("/cart.html",validateUser,(req,res)=>{
-    res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', `cart.html`));
+    res.sendFile(path.join(__dirname, '..', 'Frontend', `cart.html`));
 })
-
 app.get("/delivery.html",validateUser,(req,res)=>{
-    res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', `delivery.html`));
+    res.sendFile(path.join(__dirname, '..', 'Frontend', `delivery.html`));
 })
-
 app.get("/wishlist.html",validateUser,(req,res)=>{
-    res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', `wishlist.html`));
+    res.sendFile(path.join(__dirname, '..', 'Frontend', `wishlist.html`));
 })
-
 app.get("/profile.html",validateUser,(req,res)=>{
-    res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', `profile.html`));
+    res.sendFile(path.join(__dirname, '..', 'Frontend', `profile.html`));
 })
-
-app.use(express.static(path.join(__dirname, '..','pm_dashboards_v2')));
-
+app.use(express.static(path.join(__dirname, '..','Frontend')));
 app.get("/",(req,res)=>{
-    // res.sendFile(path.join(__dirname, '..', 'pm_dashboards_v2', 'index.html'));
     res.redirect("/index.html");
-    // res.send("hello world");
-
 });
-
 app.get("/validateUser",validateUser,(req,res)=>{
     res.send("success");
 })
-
 app.get("/admin",(req,res)=>{
     res.redirect("/admin.html");
 })
-
 app.use("/api/parse-resume",pdf);
 app.use("/api",route);
 app.use("/bert",bertRoute);
 app.use("/getData",getData)
-
-
+app.use("/application",applicationRoutes)
+app.use("/quiz",quizRoutes)
+app.use("/notification",notificationRoutes)
 app.get('/:page', (req, res) => {
     console.log("hello world");
     if(req.params.page=="order")
@@ -137,16 +112,12 @@ app.get('/:page', (req, res) => {
     {
         res.redirect("/profile.html");
     }
-    // console.log("page :: ",req.params.page);
     if (req.params.page.includes('.'))
         {
             return res.status(404).send('Not found');
-        } 
-
-    res.sendFile(path.join(__dirname, '..','pm_dashboards_v2', `${req.params.page}.html`));
+        }
+    res.sendFile(path.join(__dirname, '..','Frontend', `${req.params.page}.html`));
 });
-
 app.listen(3400,()=>{
     console.log("Server started at 3400");
 })
-
