@@ -70,6 +70,28 @@
     position: relative;
     z-index: 1;
 }
+
+.about-section {
+    background: url('Images/aboutus.jpeg') no-repeat center center;
+    background-size: cover;
+    position: relative;
+}
+
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 0;
+}
+
+.about-section > * {
+    position: relative;
+    z-index: 1;
+}
 </style>
 </head>
 <body>
@@ -195,6 +217,7 @@
 </div>
 </div>
 <div class="contact-section">
+<img src="https://cdn.dribbble.com/users/767222/screenshots/2149436/mail-animation.gif" alt="Contact Us" style="width: 200px; margin: 0 auto 20px; display: block;">
 <h2 data-i18n="getInTouch">Get in Touch</h2>
 <p data-i18n="getInTouchText">Questions? Issues? Just want to talk? Drop us a message.</p>
 <a href="mailto:support@jobsy.com" class="btn primary" data-i18n="emailUs">Email Us</a>
