@@ -1,15 +1,12 @@
 const mongoose=require('mongoose');
-
-mongoose.connect("mongodb://127.0.0.1:27017/SIH")
+mongoose.connect("mongodb://127.0.0.1:27017/Jobsy")
 .then(()=>{console.log("Mongo connected for candidate")})
 .catch((err)=>console.log("error of mongo candidate : ",err))
-
 const candidateSchema=new mongoose.Schema({
     Name:{
         type:String,
         required:true,
     },
-
     Email:{
         type:String,
         required:true
@@ -22,7 +19,6 @@ const candidateSchema=new mongoose.Schema({
         type:String,
         required:true
     },
-
     Linkedin:{
         type:String,
         required:true
@@ -60,10 +56,5 @@ const candidateSchema=new mongoose.Schema({
         required:true
     }
 });
-
 const candidateModel=mongoose.model("candidate",candidateSchema);
-
 module.exports=candidateModel;
-
-
-
