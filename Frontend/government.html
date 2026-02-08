@@ -13,7 +13,7 @@
 
         .dashboard {
             display: flex;
-            min-height: 100vh
+            min-height: 100vh;
         }
 
         .sidebar {
@@ -72,7 +72,9 @@
         .main-content {
             margin-left: 250px;
             flex: 1;
-            padding: 20px
+            padding: 20px;
+            max-width: calc(100vw - 250px);
+            overflow-x: auto
         }
 
         .top-bar {
@@ -120,7 +122,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600
+            font-weight: 600;
+            overflow: hidden
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
         }
 
         .stats-grid {
@@ -376,7 +385,8 @@
             }
 
             .main-content {
-                margin-left: 0
+                margin-left: 0;
+                max-width: 100vw
             }
 
             .stats-grid {
@@ -420,12 +430,20 @@
 <body>
     <div class="dashboard">
         <div class="overlay" id="overlay"></div>
+        <div class="modal" id="companyModal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeCompanyModal()">&times;</span>
+                <h2>Company Details</h2>
+                <div id="companyDetailsContent"></div>
+                <button class="btn btn-secondary" onclick="closeCompanyModal()" style="margin-top:20px">Close</button>
+            </div>
+        </div>
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h2>Jobsy</h2>
             </div>
             <div class="mobile-user-info">
-                <div class="user-avatar">G</div>
+                <div class="user-avatar"><img src="https://ui-avatars.com/api/?name=Government&background=3b82f6&color=fff" alt="Government"></div>
                 <select id="languageMobile">
                     <option value="en">English</option>
                     <option value="hi">हिन्दी</option>
@@ -433,14 +451,14 @@
                 </select>
             </div>
             <ul class="nav-menu">
-                <li><a href="#dashboard" class="active" onclick="showSection('dashboard')">📊 <span data-i18n="dashboard">Dashboard</span></a></li>
-                <li><a href="#fraud-reports" onclick="showSection('fraud-reports')">🚨 <span data-i18n="fraudReports">Fraud Reports</span></a></li>
-                <li><a href="#companies" onclick="showSection('companies')">🏢 <span data-i18n="companies">Companies</span></a></li>
-                <li><a href="#verification" onclick="showSection('verification')">✅ <span data-i18n="verificationQueue">Verification Queue</span></a></li>
-                <li><a href="#analytics" onclick="showSection('analytics')">📈 <span data-i18n="analytics">Analytics</span></a></li>
-                <li><a href="#regional" onclick="showSection('regional')">🗺️ <span data-i18n="regionalData">Regional Data</span></a></li>
-                <li><a href="#actions" onclick="showSection('actions')">⚡ <span data-i18n="actionsTaken">Actions Taken</span></a></li>
-                <li><a href="index.html">🚪 <span data-i18n="logout">Logout</span></a></li>
+                <li><a href="#dashboard" class="active" onclick="showSection('dashboard')"><span data-i18n="dashboard">Dashboard</span></a></li>
+                <li><a href="#fraud-reports" onclick="showSection('fraud-reports')"><span data-i18n="fraudReports">Fraud Reports</span></a></li>
+                <li><a href="#companies" onclick="showSection('companies')"><span data-i18n="companies">Companies</span></a></li>
+                <li><a href="#verification" onclick="showSection('verification')"><span data-i18n="verificationQueue">Verification Queue</span></a></li>
+                <li><a href="#analytics" onclick="showSection('analytics')"><span data-i18n="analytics">Analytics</span></a></li>
+                <li><a href="#regional" onclick="showSection('regional')"><span data-i18n="regionalData">Regional Data</span></a></li>
+                <li><a href="#actions" onclick="showSection('actions')"><span data-i18n="actionsTaken">Actions Taken</span></a></li>
+                <li><a href="index.html"><span data-i18n="logout">Logout</span></a></li>
             </ul>
         </aside>
         <main class="main-content">
@@ -455,64 +473,37 @@
                         <option value="hi">हिन्दी</option>
                         <option value="mr">मराठी</option>
                     </select>
-                    <div class="user-avatar">G</div>
+                    <div class="user-avatar"><img src="https://ui-avatars.com/api/?name=Government&background=3b82f6&color=fff" alt="Government"></div>
                 </div>
             </div>
             <div id="dashboard" class="content-section">
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3 data-i18n="totalCompanies">Total Companies</h3>
-                        <div class="number">1,245</div>
+                        <div class="number" id="statTotalCompanies">0</div>
                     </div>
                     <div class="stat-card">
                         <h3 data-i18n="fraudReports">Fraud Reports</h3>
-                        <div class="number">87</div>
-                        <p style="color:#ef4444;font-size:0.85rem;margin-top:10px">23 pending review</p>
+                        <div class="number" id="statFraudReports">0</div>
+                        <p style="color:#ef4444;font-size:0.85rem;margin-top:10px"><span id="pendingReview">0</span> pending review</p>
                     </div>
                     <div class="stat-card">
                         <h3 data-i18n="verifiedCompanies">Verified Companies</h3>
-                        <div class="number">1,158</div>
+                        <div class="number" id="statVerifiedCompanies">0</div>
                     </div>
                     <div class="stat-card">
                         <h3 data-i18n="actionsTaken">Actions Taken</h3>
-                        <div class="number">34</div>
+                        <div class="number" id="statActionsTaken">0</div>
                         <p style="color:#10b981;font-size:0.85rem;margin-top:10px">This month</p>
                     </div>
                 </div>
                 <div class="section">
                     <h2 data-i18n="recentFraudReports">Recent Fraud Reports</h2>
-                    <div class="report-card">
-                        <span class="severity-high">High Severity</span>
-                        <h3>Fake Payment Request</h3>
-                        <p><strong>Company:</strong> QuickHire Solutions</p>
-                        <p><strong>Reported by:</strong> 5 candidates</p>
-                        <p><strong>Issue:</strong> Company asking for registration fees before interview</p>
-                        <p><strong>Date:</strong> 2 days ago</p>
-                        <button class="btn btn-primary btn-small">Investigate</button>
-                        <button class="btn btn-danger btn-small">Take Action</button>
-                    </div>
-                    <div class="report-card">
-                        <span class="severity-medium">Medium Severity</span>
-                        <h3>Misleading Job Description</h3>
-                        <p><strong>Company:</strong> TechStart Inc.</p>
-                        <p><strong>Reported by:</strong> 2 candidates</p>
-                        <p><strong>Issue:</strong> Job requirements don't match actual work</p>
-                        <p><strong>Date:</strong> 5 days ago</p>
-                        <button class="btn btn-primary btn-small">Investigate</button>
-                        <button class="btn btn-secondary btn-small">Mark Resolved</button>
-                    </div>
+                    <div id="recentFraudReportsContainer"></div>
                 </div>
                 <div class="section">
                     <h2 data-i18n="pendingVerifications">Pending Verifications</h2>
-                    <div class="company-card">
-                        <h3>Digital Innovations Pvt Ltd</h3>
-                        <span class="status-badge status-pending">Pending Verification</span>
-                        <p>📍 Mumbai | 🏢 IT Services | 👥 50-100 employees</p>
-                        <p><strong>Submitted:</strong> 3 days ago</p>
-                        <button class="btn btn-primary btn-small">Review Documents</button>
-                        <button class="btn btn-secondary btn-small">Approve</button>
-                        <button class="btn btn-danger btn-small">Reject</button>
-                    </div>
+                    <div id="pendingVerificationsContainer"></div>
                 </div>
             </div>
             <div id="fraud-reports" class="content-section hidden">
@@ -532,38 +523,7 @@
                             <option>Resolved</option>
                         </select>
                     </div>
-                    <div class="report-card">
-                        <span class="severity-high">High Severity</span>
-                        <h3>Fake Payment Request</h3>
-                        <p><strong>Company:</strong> QuickHire Solutions</p>
-                        <p><strong>Reported by:</strong> 5 candidates</p>
-                        <p><strong>Issue:</strong> Company asking for registration fees before interview</p>
-                        <p><strong>Date:</strong> 2 days ago</p>
-                        <p><strong>Status:</strong> <span style="color:#f59e0b">Under Investigation</span></p>
-                        <button class="btn btn-primary btn-small">View Details</button>
-                        <button class="btn btn-danger btn-small">Take Action</button>
-                    </div>
-                    <div class="report-card">
-                        <span class="severity-medium">Medium Severity</span>
-                        <h3>Misleading Job Description</h3>
-                        <p><strong>Company:</strong> TechStart Inc.</p>
-                        <p><strong>Reported by:</strong> 2 candidates</p>
-                        <p><strong>Issue:</strong> Job requirements don't match actual work</p>
-                        <p><strong>Date:</strong> 5 days ago</p>
-                        <p><strong>Status:</strong> <span style="color:#f59e0b">Pending Review</span></p>
-                        <button class="btn btn-primary btn-small">View Details</button>
-                        <button class="btn btn-secondary btn-small">Mark Resolved</button>
-                    </div>
-                    <div class="report-card">
-                        <span class="severity-low">Low Severity</span>
-                        <h3>Delayed Response</h3>
-                        <p><strong>Company:</strong> Creative Studios</p>
-                        <p><strong>Reported by:</strong> 1 candidate</p>
-                        <p><strong>Issue:</strong> No response after interview for 3 weeks</p>
-                        <p><strong>Date:</strong> 10 days ago</p>
-                        <p><strong>Status:</strong> <span style="color:#10b981">Resolved</span></p>
-                        <button class="btn btn-secondary btn-small">View Details</button>
-                    </div>
+                    <div id="allFraudReportsContainer"></div>
                 </div>
             </div>
             <div id="companies" class="content-section hidden">
@@ -619,26 +579,7 @@
             <div id="verification" class="content-section hidden">
                 <div class="section">
                     <h2>Verification Queue</h2>
-                    <div class="company-card">
-                        <h3>Digital Innovations Pvt Ltd</h3>
-                        <span class="status-badge status-pending">Pending Verification</span>
-                        <p>📍 Mumbai | 🏢 IT Services | 👥 50-100 employees</p>
-                        <p><strong>Registration Date:</strong> Jan 15, 2024</p>
-                        <p><strong>Documents Submitted:</strong> Company Registration, GST, PAN</p>
-                        <button class="btn btn-primary btn-small">Review Documents</button>
-                        <button class="btn btn-secondary btn-small">Approve</button>
-                        <button class="btn btn-danger btn-small">Reject</button>
-                    </div>
-                    <div class="company-card">
-                        <h3>StartUp Hub Technologies</h3>
-                        <span class="status-badge status-pending">Pending Verification</span>
-                        <p>📍 Hyderabad | 🏢 Software Development | 👥 10-50 employees</p>
-                        <p><strong>Registration Date:</strong> Jan 18, 2024</p>
-                        <p><strong>Documents Submitted:</strong> Company Registration, GST</p>
-                        <button class="btn btn-primary btn-small">Review Documents</button>
-                        <button class="btn btn-secondary btn-small">Approve</button>
-                        <button class="btn btn-danger btn-small">Reject</button>
-                    </div>
+                    <div id="verificationQueueContainer"></div>
                 </div>
             </div>
             <div id="analytics" class="content-section hidden">
@@ -647,13 +588,13 @@
                     <div class="stats-grid">
                         <div class="stat-card">
                             <h3>Total Internships Posted</h3>
-                            <div class="number">3,456</div>
-                            <p style="color:#10b981;font-size:0.85rem;margin-top:10px">↑ 15% from last month</p>
+                            <div class="number" id="statTotalInternships">0</div>
+                            <p style="color:#10b981;font-size:0.85rem;margin-top:10px">From database</p>
                         </div>
                         <div class="stat-card">
                             <h3>Active Candidates</h3>
-                            <div class="number">12,890</div>
-                            <p style="color:#10b981;font-size:0.85rem;margin-top:10px">↑ 8% from last month</p>
+                            <div class="number" id="statActiveCandidates">0</div>
+                            <p style="color:#10b981;font-size:0.85rem;margin-top:10px">Registered users</p>
                         </div>
                         <div class="stat-card">
                             <h3>Fraud Detection Rate</h3>
@@ -679,46 +620,10 @@
             <div id="regional" class="content-section hidden">
                 <div class="section">
                     <h2>Regional Data</h2>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>Maharashtra</h3>
-                            <div class="number">345</div>
-                            <p style="font-size:0.85rem;color:#666;margin-top:5px">Companies</p>
-                            <p style="font-size:0.85rem;color:#ef4444;margin-top:5px">12 fraud reports</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Karnataka</h3>
-                            <div class="number">298</div>
-                            <p style="font-size:0.85rem;color:#666;margin-top:5px">Companies</p>
-                            <p style="font-size:0.85rem;color:#ef4444;margin-top:5px">8 fraud reports</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Delhi NCR</h3>
-                            <div class="number">267</div>
-                            <p style="font-size:0.85rem;color:#666;margin-top:5px">Companies</p>
-                            <p style="font-size:0.85rem;color:#ef4444;margin-top:5px">15 fraud reports</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Tamil Nadu</h3>
-                            <div class="number">189</div>
-                            <p style="font-size:0.85rem;color:#666;margin-top:5px">Companies</p>
-                            <p style="font-size:0.85rem;color:#ef4444;margin-top:5px">6 fraud reports</p>
-                        </div>
-                    </div>
+                    <div class="stats-grid" id="regionalStatsContainer"></div>
                     <div style="margin-top:30px">
                         <h3>High Risk Regions</h3>
-                        <div class="report-card">
-                            <h3>Delhi NCR</h3>
-                            <p>15 fraud reports in last 30 days</p>
-                            <p>Most common issue: Fake payment requests</p>
-                            <button class="btn btn-primary btn-small">View Details</button>
-                        </div>
-                        <div class="report-card">
-                            <h3>Maharashtra</h3>
-                            <p>12 fraud reports in last 30 days</p>
-                            <p>Most common issue: Misleading job descriptions</p>
-                            <button class="btn btn-primary btn-small">View Details</button>
-                        </div>
+                        <div id="highRiskRegionsContainer"></div>
                     </div>
                 </div>
             </div>
@@ -771,13 +676,8 @@
         </main>
     </div>
     <script src="script.js"></script>
+    <script src="government.js"></script>
     <script>
-        function showSection(sectionId) {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(sectionId).classList.remove('hidden');
-            document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
-            event.target.classList.add('active');
-        }
 
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
@@ -802,6 +702,42 @@
                 langDesktop.value = e.target.value;
                 langDesktop.dispatchEvent(new Event('change'));
             });
+        }
+
+        function investigateReport(issue, company) {
+            alert(`Investigation Started\n\nIssue: ${issue}\nCompany: ${company}\n\nAn investigation team has been assigned. You will receive updates within 24 hours.`);
+        }
+
+        function takeAction(company, issue) {
+            if (confirm(`Take action against ${company} for ${issue}?\n\nThis will suspend their account pending investigation.`)) {
+                alert(`Action Taken!\n\n${company} account has been suspended.\nAll active postings have been removed.\nCandidates have been notified.`);
+            }
+        }
+
+        function markResolved(issue, company) {
+            if (confirm(`Mark ${issue} for ${company} as resolved?`)) {
+                alert(`Report marked as resolved.\n\nThe company has been notified and the case is closed.`);
+            }
+        }
+
+        function reviewDocuments(company) {
+            alert(`Document Review\n\nCompany: ${company}\n\nDocuments:\n- Company Registration Certificate\n- GST Certificate\n- PAN Card\n- Address Proof\n\nAll documents are available for review in the verification portal.`);
+        }
+
+        function approveCompany(company) {
+            if (confirm(`Approve ${company} for platform registration?`)) {
+                alert(`${company} has been approved!\n\nThe company can now post internships.\nVerification badge has been assigned.`);
+            }
+        }
+
+        function rejectCompany(company) {
+            if (confirm(`Reject ${company} registration?\n\nPlease provide a reason for rejection.`)) {
+                alert(`${company} registration has been rejected.\n\nThe company has been notified with the reason.`);
+            }
+        }
+
+        function viewRegionalDetails(region) {
+            alert(`Regional Analysis: ${region}\n\nDetailed fraud patterns, company statistics, and action history for this region are available in the full report.\n\nClick 'Generate Report' to download the complete analysis.`);
         }
     </script>
 </body>
