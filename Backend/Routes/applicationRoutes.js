@@ -1,0 +1,12 @@
+const express=require("express");
+const handler=require("../Controllers/applicationController");
+const quizHandler=require("../Controllers/quizController");
+const router=express.Router();
+router.post("/apply",handler.applyInternship);
+router.get("/candidate",handler.getApplicationsByCandidate);
+router.get("/company",handler.getApplicationsByCompany);
+router.post("/saveInternship",handler.saveInternship);
+router.get("/savedInternships",handler.getSavedInternships);
+router.post("/removeSaved",handler.removeSavedInternship);
+router.post("/updateStatus",quizHandler.updateApplicationStatus);
+module.exports=router;
