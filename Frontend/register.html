@@ -30,7 +30,7 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             border-radius: 12px;
@@ -49,14 +49,14 @@
 
         .register-card h2 {
             text-align: center;
-            color: #000000;
+            color: #111;
             margin: 0 0 30px;
             font-size: 2em;
             font-weight: 700
         }
 
         .register-card h3 {
-            color: #000000;
+            color: #111;
             margin: 20px 0 15px;
             font-size: 1.2em;
             font-weight: 600
@@ -71,7 +71,7 @@
             display: flex;
             flex-direction: column;
             font-weight: 500;
-            color: #000000;
+            color: #333;
             margin-bottom: 25px
         }
 
@@ -79,27 +79,27 @@
         .register-card select,
         .register-card textarea {
             padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid #e5e7eb;
             border-radius: 6px;
             font-size: 1em;
             margin-top: 8px;
             width: 100%;
             box-sizing: border-box;
-            background: rgba(255, 255, 255, 0.1);
-            color: #000000
+            background: #fff;
+            color: #333
         }
 
         .register-card input::placeholder,
         .register-card textarea::placeholder {
-            color: rgba(255, 255, 255, 0.6)
+            color: #999
         }
 
         .register-card input:focus,
         .register-card select:focus,
         .register-card textarea:focus {
             outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2)
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2)
         }
 
         .btn {
@@ -114,15 +114,15 @@
         }
 
         .btn.primary {
-            background: #007bff;
+            background: #6366f1;
             color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
             width: 100%;
             margin-top: 10px
         }
 
         .btn.primary:hover {
-            background: #0056b3;
+            background: #4f46e5;
             transform: translateY(-2px)
         }
 
@@ -165,11 +165,11 @@
             text-align: center;
             margin-top: 25px;
             font-size: 0.9em;
-            color: #fff
+            color: #666
         }
 
         .form-switch a {
-            color: #000000;
+            color: #6366f1;
             text-decoration: none
         }
 
@@ -326,6 +326,7 @@
     <footer class="footer">
         <p data-i18n="footerText">© 2026 Jobsy — By Team TechTara.</p>
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="script.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -333,6 +334,70 @@
             const candidateFields = document.getElementById("candidateFields");
             const companyFields = document.getElementById("companyFields");
             const registerForm = document.getElementById("registerForm");
+            const resumeUpload = document.getElementById("resumeUpload");
+
+            resumeUpload.addEventListener("change", async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    try {
+                        const typedArray = new Uint8Array(event.target.result);
+                        const pdf = await pdfjsLib.getDocument(typedArray).promise;
+                        let text = "";
+                        for (let i = 1; i <= pdf.numPages; i++) {
+                            const page = await pdf.getPage(i);
+                            const content = await page.getTextContent();
+                            text += content.items.map(item => item.str).join(" ") + " ";
+                        }
+                        autoFillForm(text);
+                    } catch (error) {
+                        console.error("Error parsing PDF:", error);
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            });
+
+            function autoFillForm(text) {
+                const emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+                if (emailMatch && !document.getElementById("userId").value) {
+                    document.getElementById("userId").value = emailMatch[0];
+                }
+                const nameMatch = text.match(/^([A-Z][a-z]+\s[A-Z][a-z]+)/);
+                if (nameMatch && !document.getElementById("userName").value) {
+                    document.getElementById("userName").value = nameMatch[0];
+                }
+                const linkedinMatch = text.match(/(https?:\/\/)?(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+/i);
+                if (linkedinMatch && !document.getElementById("portfolioUrl").value) {
+                    document.getElementById("portfolioUrl").value = linkedinMatch[0];
+                }
+                const skills = [];
+                const skillKeywords = ["JavaScript", "Python", "Java", "React", "Node.js", "HTML", "CSS", "SQL", "MongoDB", "AWS", "Docker", "Git", "TypeScript", "Angular", "Vue"];
+                skillKeywords.forEach(skill => {
+                    if (text.includes(skill)) skills.push(skill);
+                });
+                if (skills.length > 0 && !document.getElementById("skills").value) {
+                    document.getElementById("skills").value = skills.join(", ");
+                }
+                const eduMatch = text.match(/(Bachelor|Master|B\.Tech|M\.Tech|BCA|MCA|B\.Sc|M\.Sc)/i);
+                if (eduMatch && !document.getElementById("educationLevel").value) {
+                    const edu = eduMatch[0].toLowerCase();
+                    if (edu.includes("master") || edu.includes("m.")) {
+                        document.getElementById("educationLevel").value = "postgraduate";
+                    } else {
+                        document.getElementById("educationLevel").value = "graduate";
+                    }
+                }
+                const collegeMatch = text.match(/(University|College|Institute)[^\n]{0,50}/i);
+                if (collegeMatch && !document.getElementById("university").value) {
+                    document.getElementById("university").value = collegeMatch[0].trim();
+                }
+                const yearMatch = text.match(/\b(19|20)\d{2}\b/);
+                if (yearMatch && !document.getElementById("graduationYear").value) {
+                    document.getElementById("graduationYear").value = yearMatch[0];
+                }
+            }
+
             function toggleFields() {
                 if (roleSelect.value === "candidate") {
                     candidateFields.style.display = "block";
