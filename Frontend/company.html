@@ -120,7 +120,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600
+            font-weight: 600;
+            overflow: hidden
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
         }
 
         .stats-grid {
@@ -371,7 +378,7 @@
                 <h2>Jobsy</h2>
             </div>
             <div class="mobile-user-info">
-                <div class="user-avatar">T</div>
+                <div class="user-avatar"><img src="https://ui-avatars.com/api/?name=TechCorp&background=3b82f6&color=fff" alt="Company"></div>
                 <select id="languageMobile">
                     <option value="en">English</option>
                     <option value="hi">हिन्दी</option>
@@ -379,14 +386,14 @@
                 </select>
             </div>
             <ul class="nav-menu">
-                <li><a href="#dashboard" class="active" onclick="showSection('dashboard')">📊 <span data-i18n="dashboard">Dashboard</span></a></li>
-                <li><a href="#postings" onclick="showSection('postings')">💼 <span data-i18n="myPostings">My Postings</span></a></li>
-                <li><a href="#applications" onclick="showSection('applications')">📝 <span data-i18n="applications">Applications</span></a></li>
-                <li><a href="#candidates" onclick="showSection('candidates')">👥 <span data-i18n="candidates">Candidates</span></a></li>
-                <li><a href="#analytics" onclick="showSection('analytics')">📈 <span data-i18n="analytics">Analytics</span></a></li>
-                <li><a href="#profile" onclick="showSection('profile')">🏢 <span data-i18n="companyProfile">Company Profile</span></a></li>
-                <li><a href="#post-internship" onclick="showSection('post-internship')">➕ <span data-i18n="postInternship">Post Internship</span></a></li>
-                <li><a href="index.html">🚪 <span data-i18n="logout">Logout</span></a></li>
+                <li><a href="#dashboard" class="active" onclick="showSection('dashboard')"><span data-i18n="dashboard">Dashboard</span></a></li>
+                <li><a href="#postings" onclick="showSection('postings')"><span data-i18n="myPostings">My Postings</span></a></li>
+                <li><a href="#applications" onclick="showSection('applications')"><span data-i18n="applications">Applications</span></a></li>
+                <li><a href="#candidates" onclick="showSection('candidates')"><span data-i18n="candidates">Candidates</span></a></li>
+                <li><a href="#analytics" onclick="showSection('analytics')"><span data-i18n="analytics">Analytics</span></a></li>
+                <li><a href="#profile" onclick="showSection('profile')"><span data-i18n="companyProfile">Company Profile</span></a></li>
+                <li><a href="#post-internship" onclick="showSection('post-internship')"><span data-i18n="postInternship">Post Internship</span></a></li>
+                <li><a href="index.html"><span data-i18n="logout">Logout</span></a></li>
             </ul>
         </aside>
         <main class="main-content">
@@ -401,156 +408,59 @@
                         <option value="hi">हिन्दी</option>
                         <option value="mr">मराठी</option>
                     </select>
-                    <div class="user-avatar">T</div>
+                    <div class="user-avatar"><img src="https://ui-avatars.com/api/?name=TechCorp&background=3b82f6&color=fff" alt="Company"></div>
                 </div>
             </div>
             <div id="dashboard" class="content-section">
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3 data-i18n="activePostings">Active Postings</h3>
-                        <div class="number">8</div>
+                        <div class="number" id="statActivePostings">0</div>
                     </div>
                     <div class="stat-card">
                         <h3 data-i18n="totalApplications">Total Applications</h3>
-                        <div class="number">156</div>
+                        <div class="number" id="statTotalApplications">0</div>
                     </div>
                     <div class="stat-card">
                         <h3 data-i18n="shortlisted">Shortlisted</h3>
-                        <div class="number">24</div>
+                        <div class="number" id="statShortlisted">0</div>
                     </div>
                     <div class="stat-card">
                         <h3 data-i18n="hired">Hired</h3>
-                        <div class="number">12</div>
+                        <div class="number" id="statHired">0</div>
                     </div>
                 </div>
                 <div class="section">
                     <h2 data-i18n="recentApplications">Recent Applications</h2>
-                    <div class="candidate-item">
-                        <div class="candidate-info">
-                            <h4>Rahul Sharma</h4>
-                            <p>Applied for: Frontend Developer Intern</p>
-                            <p>Skills: React, JavaScript, HTML, CSS</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary btn-small">View Profile</button>
-                            <button class="btn btn-secondary btn-small">Shortlist</button>
-                        </div>
-                    </div>
-                    <div class="candidate-item">
-                        <div class="candidate-info">
-                            <h4>Priya Patel</h4>
-                            <p>Applied for: UI/UX Design Intern</p>
-                            <p>Skills: Figma, Adobe XD, Prototyping</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary btn-small">View Profile</button>
-                            <button class="btn btn-secondary btn-small">Shortlist</button>
-                        </div>
-                    </div>
                 </div>
                 <div class="section">
                     <h2 data-i18n="activePostings">Active Postings</h2>
-                    <div class="internship-card">
-                        <h3>Frontend Developer Intern</h3>
-                        <span class="status-badge status-active">Active</span>
-                        <p>📍 Remote | 💰 ₹15,000/month | ⏰ 6 months</p>
-                        <p><strong>Applications:</strong> 45 | <strong>Views:</strong> 230</p>
-                        <button class="btn btn-primary btn-small">View Applications</button>
-                        <button class="btn btn-secondary btn-small">Edit</button>
-                    </div>
-                    <div class="internship-card">
-                        <h3>Backend Developer Intern</h3>
-                        <span class="status-badge status-active">Active</span>
-                        <p>📍 Bangalore | 💰 ₹20,000/month | ⏰ 6 months</p>
-                        <p><strong>Applications:</strong> 38 | <strong>Views:</strong> 180</p>
-                        <button class="btn btn-primary btn-small">View Applications</button>
-                        <button class="btn btn-secondary btn-small">Edit</button>
-                    </div>
+                    <div id="activePostingsContainer"></div>
                 </div>
             </div>
             <div id="postings" class="content-section hidden">
                 <div class="section">
                     <h2>My Postings</h2>
-                    <div class="internship-card">
-                        <h3>Frontend Developer Intern</h3>
-                        <span class="status-badge status-active">Active</span>
-                        <p>📍 Remote | 💰 ₹15,000/month | ⏰ 6 months</p>
-                        <p><strong>Posted:</strong> 5 days ago | <strong>Applications:</strong> 45</p>
-                        <button class="btn btn-primary btn-small">View Applications</button>
-                        <button class="btn btn-secondary btn-small">Edit</button>
-                        <button class="btn btn-secondary btn-small">Close</button>
-                    </div>
-                    <div class="internship-card">
-                        <h3>Backend Developer Intern</h3>
-                        <span class="status-badge status-active">Active</span>
-                        <p>📍 Bangalore | 💰 ₹20,000/month | ⏰ 6 months</p>
-                        <p><strong>Posted:</strong> 10 days ago | <strong>Applications:</strong> 38</p>
-                        <button class="btn btn-primary btn-small">View Applications</button>
-                        <button class="btn btn-secondary btn-small">Edit</button>
-                        <button class="btn btn-secondary btn-small">Close</button>
-                    </div>
-                    <div class="internship-card">
-                        <h3>Data Analyst Intern</h3>
-                        <span class="status-badge status-closed">Closed</span>
-                        <p>📍 Mumbai | 💰 ₹12,000/month | ⏰ 3 months</p>
-                        <p><strong>Posted:</strong> 30 days ago | <strong>Applications:</strong> 73</p>
-                        <button class="btn btn-secondary btn-small">View Details</button>
-                    </div>
+                    <div id="allPostingsContainer"></div>
                 </div>
             </div>
             <div id="applications" class="content-section hidden">
                 <div class="section">
                     <h2>All Applications</h2>
                     <div style="margin-bottom:20px">
-                        <select style="padding:10px;border:1px solid #e5e7eb;border-radius:6px;margin-right:10px">
-                            <option>All Postings</option>
-                            <option>Frontend Developer</option>
-                            <option>Backend Developer</option>
+                        <select id="postingFilter" onchange="filterApplications()" style="padding:10px;border:1px solid #e5e7eb;border-radius:6px;margin-right:10px">
+                            <option value="all">All Postings</option>
+                            <option value="frontend">Frontend Developer</option>
+                            <option value="backend">Backend Developer</option>
                         </select>
-                        <select style="padding:10px;border:1px solid #e5e7eb;border-radius:6px">
-                            <option>All Status</option>
-                            <option>New</option>
-                            <option>Shortlisted</option>
-                            <option>Rejected</option>
+                        <select id="statusFilter" onchange="filterApplications()" style="padding:10px;border:1px solid #e5e7eb;border-radius:6px">
+                            <option value="all">All Status</option>
+                            <option value="new">New</option>
+                            <option value="shortlisted">Shortlisted</option>
+                            <option value="rejected">Rejected</option>
                         </select>
                     </div>
-                    <div class="candidate-item">
-                        <div class="candidate-info">
-                            <h4>Rahul Sharma</h4>
-                            <p>Applied for: Frontend Developer Intern</p>
-                            <p>Skills: React, JavaScript, HTML, CSS</p>
-                            <p><strong>Status:</strong> <span style="color:#f59e0b">Under Review</span></p>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary btn-small">View Profile</button>
-                            <button class="btn btn-secondary btn-small">Shortlist</button>
-                            <button class="btn btn-secondary btn-small">Reject</button>
-                        </div>
-                    </div>
-                    <div class="candidate-item">
-                        <div class="candidate-info">
-                            <h4>Priya Patel</h4>
-                            <p>Applied for: Frontend Developer Intern</p>
-                            <p>Skills: React, Vue, TypeScript</p>
-                            <p><strong>Status:</strong> <span style="color:#10b981">Shortlisted</span></p>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary btn-small">View Profile</button>
-                            <button class="btn btn-primary btn-small">Schedule Interview</button>
-                        </div>
-                    </div>
-                    <div class="candidate-item">
-                        <div class="candidate-info">
-                            <h4>Amit Kumar</h4>
-                            <p>Applied for: Backend Developer Intern</p>
-                            <p>Skills: Node.js, MongoDB, Express</p>
-                            <p><strong>Status:</strong> <span style="color:#f59e0b">Under Review</span></p>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary btn-small">View Profile</button>
-                            <button class="btn btn-secondary btn-small">Shortlist</button>
-                            <button class="btn btn-secondary btn-small">Reject</button>
-                        </div>
+                    <div id="applicationsContainer">
                     </div>
                 </div>
             </div>
@@ -663,7 +573,7 @@
                         <label>Company Logo</label>
                         <input type="file" accept="image/*">
                     </div>
-                    <button class="btn btn-primary">Update Profile</button>
+                    <button class="btn btn-primary" onclick="updateCompanyProfile()">Update Profile</button>
                 </div>
             </div>
             <div id="post-internship" class="content-section hidden">
@@ -702,12 +612,13 @@
                         <label>Application Deadline</label>
                         <input type="date">
                     </div>
-                    <button class="btn btn-primary">Post Internship</button>
+                    <button class="btn btn-primary" onclick="postInternship()">Post Internship</button>
                 </div>
             </div>
         </main>
     </div>
     <script src="script.js"></script>
+    <script src="company.js"></script>
     <script>
         function showSection(sectionId) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
@@ -729,6 +640,8 @@
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
         });
+
+        // Sync mobile language selector with desktop
         const langMobile = document.getElementById('languageMobile');
         const langDesktop = document.getElementById('language');
         if (langMobile && langDesktop) {
@@ -738,6 +651,105 @@
                 langDesktop.dispatchEvent(new Event('change'));
             });
         }
+
+        function filterApplications() {
+            const postingFilter = document.getElementById('postingFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const items = document.querySelectorAll('#applicationsContainer .candidate-item');
+            
+            items.forEach(item => {
+                const posting = item.getAttribute('data-posting');
+                const status = item.getAttribute('data-status');
+                const showPosting = postingFilter === 'all' || posting === postingFilter;
+                const showStatus = statusFilter === 'all' || status === statusFilter;
+                
+                if (showPosting && showStatus) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function postInternship() {
+            const inputs = document.querySelectorAll('#post-internship input');
+            const textarea = document.querySelector('#post-internship textarea');
+            
+            const title = inputs[0].value;
+            const location = inputs[1].value;
+            const stipend = inputs[2].value;
+            const skills = inputs[4].value;
+            const deadline = inputs[6].value;
+            const description = textarea ? textarea.value : '';
+            
+            if (!title || !location || !stipend) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+            
+            fetch('/api/getUser')
+                .then(res => res.json())
+                .then(user => {
+                    return fetch('/getData/postInternship', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            internshipTitle: title,
+                            companyName: user.CompanyName,
+                            location,
+                            stipend,
+                            stream: user.Industry || 'General',
+                            eligibility: [],
+                            applicationDeadline: deadline,
+                            description,
+                            skills: skills ? skills.split(',').map(s => s.trim()) : []
+                        })
+                    });
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                    } else {
+                        alert(`Internship Posted Successfully!\n\nTitle: ${title}\nLocation: ${location}\nStipend: Rs.${stipend}/month\n\nYour posting is now live and candidates can apply.`);
+                        document.querySelectorAll('#post-internship input, #post-internship textarea').forEach(el => el.value = '');
+                        if(typeof loadCompanyProfile === 'function') loadCompanyProfile();
+                    }
+                })
+                .catch(err => {
+                    console.error('Error posting internship:', err);
+                    alert('Failed to post internship. Please try again.');
+                });
+        }
+        function updateCompanyProfile(){
+const inputs=document.querySelectorAll('#profile input');
+const textarea=document.querySelector('#profile textarea');
+const select=document.querySelector('#profile select');
+fetch('/api/updateProfile',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+CompanyName:inputs[0].value,
+Email:inputs[1].value,
+CompanySize:select.value,
+Industry:inputs[3].value,
+Website:inputs[4].value
+})
+})
+.then(res=>res.json())
+.then(data=>{
+if(data.error){
+alert('Error: '+data.error);
+}else{
+alert('Profile updated successfully!');
+if(typeof loadCompanyProfile==='function')loadCompanyProfile();
+}
+})
+.catch(err=>{
+console.error('Error updating profile:',err);
+alert('Failed to update profile.');
+});
+}
     </script>
 </body>
 
