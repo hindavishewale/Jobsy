@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
+    const FRONTEND_URL = "https://jobsyhwm.vercel.app";
+const BACKEND_URL = "https://final-year-project-rk87.onrender.com";
+
 
     if (menuToggle) {
         menuToggle.addEventListener('click', () => {
@@ -28,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadProfile() {
-        fetch("/api/getUser")
+        fetch(`${BACKEND_URL}/api/getUser`)
             .then(res => res.json())
             .then(data => {
                 console.log("userProfile:", data);
@@ -63,14 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function logout() {
-    fetch("/api/logout")
+    fetch(`${BACKEND_URL}/api/logout`)
         .then(() => {
             window.location.href = "index.html";
         });
 }
 
 function loadInternships(email) {
-    fetch("/bert/matchInternships", {
+    fetch(`${BACKEND_URL}/bert/matchInternships`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email })
@@ -116,7 +119,7 @@ function loadInternships(email) {
             rec.insertAdjacentHTML("beforeend", cardHtml);
 
             // 2. Fetch the keywords and update the specific placeholder
-            fetch('/ats/analyze', {
+            fetch(`${BACKEND_URL}/ats/analyze`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, jobDescription: jobDesc })
@@ -128,7 +131,7 @@ function loadInternships(email) {
                     const kwList = ats.missingKeywords.slice(0, 5).join(', ');
                     keywordsDiv.innerHTML = `
                         <p style="color:#ef4444;font-size:0.85rem;margin-top:10px;padding:8px;background:#fff5f5;border-radius:4px;">
-                            <strong>🚀 Boost Selection Chance:</strong> Add these to your resume: <br>
+                            <strong>Boost Selection Chance:</strong> Add these to your resume: <br>
                             <span style="font-weight:600;">${kwList}</span>
                         </p>`;
                 }
@@ -152,7 +155,7 @@ function loadAllInternships() {
 
     container.innerHTML = "<p style='text-align:center;'>Scanning for internships...</p>";
 
-    fetch("/getData/getInternships")
+    fetch(`${BACKEND_URL}/getData/getInternships`)
         .then(res => res.json())
         .then(data => {
             ALL_INTERNSHIPS = data;
@@ -171,22 +174,18 @@ function loadAllInternships() {
                 const jobDesc = `${job.internshipTitle} ${description} ${skills}`;
                 
                 container.insertAdjacentHTML("beforeend", `
-                    <div class="internship-card">
+                    <div class="internship-card" onclick="showInternshipDetails('${id}')" style="cursor:pointer;">
                         <div style="display:flex; justify-content:space-between;">
                             <div>
                                 <h3>${job.internshipTitle}</h3>
                                 <p><strong>${job.companyName}</strong></p>
                             </div>
-                            <div class="risk-gauge" id="risk-${id}" onclick="showFraudDetails('${id}')" title="Click for Trust Analysis">
+                            <div class="risk-gauge" id="risk-${id}" onclick="event.stopPropagation();showFraudDetails('${id}')" title="Click for Trust Analysis">
                                 <span>--</span>
                             </div>
                         </div>
                         <p>${job.location} | ₹${job.stipend}/mo</p>
                         <div id="keywords-${id}"></div>
-                        <div style="margin-top:10px; display:flex; gap:10px;">
-                            <button class="btn btn-primary btn-small" onclick="applyNow('${job.internshipTitle}','${job.companyName}')">Apply Now</button>
-                            <button class="btn btn-secondary btn-small" onclick="saveJob('${job.internshipTitle}','${job.companyName}')">Save</button>
-                        </div>
                     </div>
                 `);
                 checkFraudForInternship(job, id);
@@ -199,8 +198,38 @@ function loadAllInternships() {
         });
 }
 
+function showInternshipDetails(id) {
+    const job = ALL_INTERNSHIPS.find(j => j._id === id);
+    if (!job) return;
+    
+    const title = (job.internshipTitle || '').replace(/'/g, "&#39;");
+    const company = (job.companyName || '').replace(/'/g, "&#39;");
+    const desc = (job.description || 'No description available').replace(/'/g, "&#39;");
+    const skillsList = Array.isArray(job.skills) ? job.skills.join(', ') : job.skills;
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
+            <h2>${title}</h2>
+            <p><strong>Company:</strong> ${company}</p>
+            <p><strong>Location:</strong> ${job.location}</p>
+            <p><strong>Stipend:</strong> ₹${job.stipend}/month</p>
+            <p><strong>Skills Required:</strong> ${skillsList}</p>
+            <p><strong>Description:</strong></p>
+            <p style="color:#666;">${desc}</p>
+            <div style="margin-top:20px;display:flex;gap:10px;">
+                <button class="btn btn-primary" onclick="this.closest('.modal').remove();applyNow('${title}','${company}');">Apply Now</button>
+                <button class="btn btn-secondary" onclick="this.closest('.modal').remove();saveJob('${title}','${company}');">Save</button>
+                <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">Close</button>
+            </div>
+        </div>`;
+    document.body.appendChild(modal);
+}
+
 function checkKeywords(email, jobDesc, id) {
-    fetch('/ats/analyze', {
+    fetch(`${BACKEND_URL}/ats/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, jobDescription: jobDesc })
@@ -219,10 +248,10 @@ function checkKeywords(email, jobDesc, id) {
 }
 
 function checkFraudForInternship(job, id) {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(() => {
-            return fetch('/getData/getCompany', {
+            return fetch(`${BACKEND_URL}/getData/getCompany`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ companyName: job.companyName })
@@ -230,7 +259,7 @@ function checkFraudForInternship(job, id) {
         })
         .then(res => res.json())
         .then(company => {
-            return fetch("/api/fraud/check", {
+            return fetch(`${BACKEND_URL}/api/fraud/check`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -330,23 +359,33 @@ function showSection(sectionId) {
 }
 
 function applyNow(jobTitle, company) {
-    const container = document.querySelector('[id="allInternshipsContainer"], [id="recc"]');
-    const internshipCard = event.target.closest('.internship-card');
-    let internshipId = '';
     let location = '';
     let stipend = '';
-    if (internshipCard) {
-        const locationStipendText = internshipCard.querySelector('p:nth-of-type(2)')?.textContent || '';
-        const parts = locationStipendText.split('|');
-        location = parts[0]?.trim() || '';
-        stipend = parts[1]?.replace('Rs.', '').replace('/month', '').trim() || '';
+    let internshipId = '';
+    
+    // Try to find the job in ALL_INTERNSHIPS first
+    const job = ALL_INTERNSHIPS.find(j => j.internshipTitle === jobTitle && j.companyName === company);
+    if (job) {
+        location = job.location;
+        stipend = job.stipend;
+        internshipId = job._id;
+    } else {
+        // Fallback: try to extract from card
+        const internshipCard = event?.target?.closest('.internship-card');
+        if (internshipCard) {
+            const locationStipendText = internshipCard.querySelector('p:nth-of-type(2)')?.textContent || '';
+            const parts = locationStipendText.split('|');
+            location = parts[0]?.trim() || '';
+            stipend = parts[1]?.replace('Rs.', '').replace('/month', '').replace('₹', '').replace('/mo', '').trim() || '';
+        }
         internshipId = `${company}_${jobTitle}`.replace(/\s+/g, '_');
     }
+    
     if (confirm(`Do you want to apply for ${jobTitle} at ${company}?`)) {
-        fetch('/api/getUser')
+        fetch(`${BACKEND_URL}/api/getUser`)
             .then(res => res.json())
             .then(user => {
-                return fetch('/application/apply', {
+                return fetch(`${BACKEND_URL}/application/apply`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -362,34 +401,45 @@ function applyNow(jobTitle, company) {
             .then(res => res.json())
             .then(data => {
                 if (data.error) {
-                    alert(data.error === 'Already applied' ? 'You have already applied for this internship!' : 'Error: ' + data.error);
+                    showWarning(data.error === 'Already applied' ? 'You have already applied for this internship!' : 'Error: ' + data.error);
                 } else {
-                    alert(`Application submitted successfully for ${jobTitle} at ${company}!\n\nYou will receive a confirmation email shortly.`);
+                    showSuccess(`Application submitted successfully for ${jobTitle} at ${company}!`);
                     loadApplicationCount();
                 }
             })
             .catch(err => {
                 console.error('Error applying:', err);
-                alert('Failed to submit application. Please try again.');
+                showError('Failed to submit application. Please try again.');
             });
     }
 }
 
 function saveJob(jobTitle, company) {
-    const internshipCard = event.target.closest('.internship-card');
     let location = '', stipend = '', skills = '';
-    if (internshipCard) {
-        const locationStipendText = internshipCard.querySelector('p:nth-of-type(2)')?.textContent || '';
-        const parts = locationStipendText.split('|');
-        location = parts[0]?.trim() || '';
-        stipend = parts[1]?.replace('Rs.', '').replace('/month', '').trim() || '';
-        const skillsText = internshipCard.querySelector('p:nth-of-type(3)')?.textContent || '';
-        skills = skillsText.replace('Skills:', '').trim();
+    
+    // Try to find the job in ALL_INTERNSHIPS first
+    const job = ALL_INTERNSHIPS.find(j => j.internshipTitle === jobTitle && j.companyName === company);
+    if (job) {
+        location = job.location;
+        stipend = job.stipend;
+        skills = Array.isArray(job.skills) ? job.skills.join(', ') : job.skills;
+    } else {
+        // Fallback: try to extract from card
+        const internshipCard = event?.target?.closest('.internship-card');
+        if (internshipCard) {
+            const locationStipendText = internshipCard.querySelector('p:nth-of-type(2)')?.textContent || '';
+            const parts = locationStipendText.split('|');
+            location = parts[0]?.trim() || '';
+            stipend = parts[1]?.replace('Rs.', '').replace('/month', '').replace('₹', '').replace('/mo', '').trim() || '';
+            const skillsText = internshipCard.querySelector('p:nth-of-type(3)')?.textContent || '';
+            skills = skillsText.replace('Skills:', '').trim();
+        }
     }
-    fetch('/api/getUser')
+    
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch('/application/saveInternship', {
+            return fetch(`${BACKEND_URL}/application/saveInternship`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -405,34 +455,34 @@ function saveJob(jobTitle, company) {
         .then(res => res.json())
         .then(data => {
             if (data.error) {
-                alert(data.error === 'Already saved' ? 'This internship is already in your saved list!' : 'Error: ' + data.error);
+                showWarning(data.error === 'Already saved' ? 'This internship is already in your saved list!' : 'Error: ' + data.error);
             } else {
-                alert(`${jobTitle} at ${company} has been saved to your Saved Internships!`);
+                showSuccess(`${jobTitle} at ${company} has been saved!`);
                 updateSavedCount();
             }
         })
         .catch(err => {
             console.error('Error saving internship:', err);
-            alert('Failed to save internship. Please try again.');
+            showError('Failed to save internship. Please try again.');
         });
 }
 
 function withdrawApplication(jobTitle, company) {
     if (confirm(`Are you sure you want to withdraw your application for ${jobTitle} at ${company}?`)) {
-        alert(`Your application for ${jobTitle} at ${company} has been withdrawn.`);
+        showSuccess(`Your application for ${jobTitle} at ${company} has been withdrawn.`);
     }
 }
 
 function viewDetails(jobTitle, company) {
-    alert(`Application Details:\n\nPosition: ${jobTitle}\nCompany: ${company}\nStatus: Interview Scheduled\nInterview Date: Jan 25, 2024\nInterview Time: 10:00 AM\nInterview Mode: Virtual (Google Meet)\n\nPlease check your email for the meeting link.`);
+    showNotification(`Interview scheduled for ${jobTitle} at ${company} on Jan 25, 2024 at 10:00 AM. Check your email for details.`, 'info');
 }
 
 function removeFromSaved(jobTitle, company) {
     if (confirm(`Remove ${jobTitle} at ${company} from saved internships?`)) {
-        fetch('/api/getUser')
+        fetch(`${BACKEND_URL}/api/getUser`)
             .then(res => res.json())
             .then(user => {
-                return fetch('/application/removeSaved', {
+                return fetch(`${BACKEND_URL}/application/removeSaved`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -445,23 +495,23 @@ function removeFromSaved(jobTitle, company) {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert(`${jobTitle} at ${company} has been removed from your saved list.`);
+                    showSuccess(`${jobTitle} at ${company} has been removed from your saved list.`);
                     loadSavedInternships();
                     updateSavedCount();
                 } else {
-                    alert('Error: ' + data.error);
+                    showError('Error: ' + data.error);
                 }
             })
             .catch(err => {
                 console.error('Error removing saved internship:', err);
-                alert('Failed to remove internship.');
+                showError('Failed to remove internship.');
             });
     }
 }
 function updateCandidateProfile(){
 const inputs=document.querySelectorAll('#profile input');
 const select=document.querySelector('#profile select');
-fetch('/api/updateProfile',{
+fetch(`${BACKEND_URL}/api/updateProfile`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({
@@ -476,15 +526,15 @@ Location:inputs[2].value
 .then(res=>res.json())
 .then(data=>{
 if(data.error){
-alert('Error: '+data.error);
+showError('Error: '+data.error);
 }else{
-alert('Profile updated successfully!');
+showSuccess('Profile updated successfully!');
 window.location.reload();
 }
 })
 .catch(err=>{
 console.error('Error updating profile:',err);
-alert('Failed to update profile.');
+showError('Failed to update profile.');
 });
 }
 function loadCandidateProfileForm(data){
@@ -497,7 +547,7 @@ if(inputs[3])inputs[3].value=data.Skills||'';
 if(inputs[5])inputs[5].value=data.Portfolio||'';
 }
 function loadApplications(email) {
-    fetch(`/application/candidate?email=${encodeURIComponent(email)}`)
+    fetch(`${BACKEND_URL}/application/candidate?email=${encodeURIComponent(email)}`)
         .then(res => res.json())
         .then(apps => {
             const recentContainer = document.getElementById('recentApplicationsContainer');
@@ -542,10 +592,10 @@ function loadApplications(email) {
         .catch(err => console.error('Error loading applications:', err));
 }
 function loadApplicationCount() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch(`/application/candidate?email=${encodeURIComponent(user.Email)}`);
+            return fetch(`${BACKEND_URL}/application/candidate?email=${encodeURIComponent(user.Email)}`);
         })
         .then(res => res.json())
         .then(apps => {
@@ -557,10 +607,10 @@ function loadApplicationCount() {
         .catch(err => console.error('Error loading count:', err));
 }
 function updateSavedCount() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch(`/application/savedInternships?email=${encodeURIComponent(user.Email)}`);
+            return fetch(`${BACKEND_URL}/application/savedInternships?email=${encodeURIComponent(user.Email)}`);
         })
         .then(res => res.json())
         .then(saved => {
@@ -572,10 +622,10 @@ function updateSavedCount() {
         .catch(err => console.error('Error loading saved count:', err));
 }
 function loadSavedInternships() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch(`/application/savedInternships?email=${encodeURIComponent(user.Email)}`);
+            return fetch(`${BACKEND_URL}/application/savedInternships?email=${encodeURIComponent(user.Email)}`);
         })
         .then(res => res.json())
         .then(saved => {
@@ -611,13 +661,13 @@ function submitFraudReport() {
     const severity = document.getElementById('fraudSeverity').value;
     const description = document.getElementById('fraudDescription').value;
     if (!companyName || !internshipTitle || !description) {
-        alert('Please fill in all required fields');
+        showWarning('Please fill in all required fields');
         return;
     }
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch('/getData/submitFraudReport', {
+            return fetch(`${BACKEND_URL}/getData/submitFraudReport`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -632,22 +682,22 @@ function submitFraudReport() {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert('Fraud report submitted successfully! Government authorities will review your report.');
+                showSuccess('Fraud report submitted successfully! Government authorities will review your report.');
                 document.getElementById('fraudCompanyName').value = '';
                 document.getElementById('fraudInternshipTitle').value = '';
                 document.getElementById('fraudDescription').value = '';
                 loadMyFraudReports();
             } else {
-                alert('Error submitting report: ' + data.error);
+                showError('Error submitting report: ' + data.error);
             }
         })
         .catch(err => {
             console.error('Error submitting fraud report:', err);
-            alert('Failed to submit report. Please try again.');
+            showError('Failed to submit report. Please try again.');
         });
 }
 function loadCurrentSkills() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
             const container = document.getElementById('currentSkillsContainer');
@@ -677,7 +727,7 @@ function analyzeSkillGap() {
         'Data Analyst': ['Python', 'SQL', 'Excel', 'Tableau', 'Power BI', 'Statistics', 'Data Visualization'],
         'UI/UX Designer': ['Figma', 'Adobe XD', 'Sketch', 'Wireframing', 'Prototyping', 'User Research', 'HTML', 'CSS']
     };
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
             const userSkills = user.Skills ? user.Skills.split(',').map(s => s.trim().toLowerCase()).filter(s => s) : [];
@@ -704,7 +754,7 @@ function analyzeSkillGap() {
 function generateRoadmap() {
     const targetRole = document.getElementById('targetRole').value;
     if (!targetRole) {
-        alert('Please select a target role first from Skill Gap Analysis');
+        showWarning('Please select a target role first from Skill Gap Analysis');
         return;
     }
     const skillConcepts = {
@@ -813,7 +863,7 @@ function generateRoadmap() {
             concepts: ['Vector Editing', 'Symbols & Overrides', 'Artboards', 'Plugins Ecosystem', 'Prototyping', 'Design Systems', 'Export & Handoff']
         }
     };
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
             const roleSkills = {
@@ -855,15 +905,15 @@ function generateRoadmap() {
         .catch(err => console.error('Error generating roadmap:', err));
 }
 function loadMyFraudReports() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
-            return fetch('/getData/getAllFraudReports');
+            return fetch(`${BACKEND_URL}/getData/getAllFraudReports`);
         })
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                return fetch('/api/getUser').then(res => res.json()).then(user => {
+                return fetch(`${BACKEND_URL}/api/getUser`).then(res => res.json()).then(user => {
                     const myReports = data.reports.filter(r => r.reportedBy === user.Email);
                     const container = document.getElementById('myFraudReports');
                     if (!container) return;
@@ -924,7 +974,7 @@ function loadAllQuizzes() {
     displayQuizzes(allQuizzes);
 }
 function showMySkillsQuizzes() {
-    fetch('/api/getUser')
+    fetch(`${BACKEND_URL}/api/getUser`)
         .then(res => res.json())
         .then(user => {
             const userSkills = user.Skills ? user.Skills.split(',').map(s => s.trim().toLowerCase()) : [];
@@ -951,7 +1001,7 @@ function filterQuizzes() {
     }
 }
 function displayQuizzes(quizzes) {
-    fetch('/quiz/getResults?email=' + encodeURIComponent(localStorage.getItem('userEmail') || ''))
+    fetch(`${BACKEND_URL}/quiz/getResults?email=` + encodeURIComponent(localStorage.getItem('userEmail') || ''))
         .then(res => res.json())
         .then(data => {
             const userResults = data.success ? data.results : [];
@@ -995,7 +1045,7 @@ function displayQuizzes(quizzes) {
 function loadNotifications(email){
 if(!email)return;
 console.log('Loading notifications for:',email);
-fetch(`/notification/getNotifications?email=${encodeURIComponent(email)}`)
+fetch(`${BACKEND_URL}/notification/getNotifications?email=${encodeURIComponent(email)}`)
 .then(res=>res.json())
 .then(data=>{
 console.log('Notifications response:',data);
@@ -1034,7 +1084,7 @@ container.insertAdjacentHTML('beforeend',card);
 .catch(err=>console.error('Error loading notifications:',err));
 }
 function markNotificationRead(id){
-fetch('/notification/markAsRead',{
+fetch(`${BACKEND_URL}/notification/markAsRead`,{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({id})
@@ -1048,29 +1098,39 @@ loadNotifications(localStorage.getItem('userEmail'));
 .catch(err=>console.error('Error marking notification:',err));
 }
 function loadAnalytics(){
+console.log('Loading analytics...');
 Promise.all([
-fetch('/api/getUser').then(r=>r.json()),
-fetch(`/application/candidate?email=${localStorage.getItem('userEmail')}`).then(r=>r.json()),
-fetch(`/application/savedInternships?email=${localStorage.getItem('userEmail')}`).then(r=>r.json()),
-fetch(`/quiz/getResults?email=${localStorage.getItem('userEmail')}`).then(r=>r.json())
+fetch(`${BACKEND_URL}/api/getUser`).then(r=>r.json()),
+fetch(`${BACKEND_URL}/application/candidate?email=${localStorage.getItem('userEmail')}`).then(r=>r.json()),
+fetch(`${BACKEND_URL}/application/savedInternships?email=${localStorage.getItem('userEmail')}`).then(r=>r.json()),
+fetch(`${BACKEND_URL}/quiz/getResults?email=${localStorage.getItem('userEmail')}`).then(r=>r.json())
 ])
 .then(([user,apps,saved,quizData])=>{
+console.log('Analytics data:', {user, apps, saved, quizData});
 const quizResults=quizData.success?quizData.results:[];
-const appRate=saved.length>0?Math.round((apps.length/saved.length)*100):0;
 const shortlisted=apps.filter(a=>a.status==='Shortlisted').length;
 const responseRate=apps.length>0?Math.round((shortlisted/apps.length)*100):0;
 const quizAvg=quizResults.length>0?Math.round(quizResults.reduce((sum,q)=>sum+q.score,0)/quizResults.length):0;
-document.getElementById('analyticsAppRate').textContent=appRate+'%';
-document.getElementById('analyticsResponseRate').textContent=responseRate+'%';
-document.getElementById('analyticsQuizAvg').textContent=quizAvg+'%';
-document.getElementById('analyticsSkillsTested').textContent=quizResults.length;
+
+const appRateEl=document.getElementById('analyticsAppRate');
+const responseRateEl=document.getElementById('analyticsResponseRate');
+const quizAvgEl=document.getElementById('analyticsQuizAvg');
+const skillsTestedEl=document.getElementById('analyticsSkillsTested');
+
+if(appRateEl) appRateEl.textContent=apps.length;
+if(responseRateEl) responseRateEl.textContent=responseRate+'%';
+if(quizAvgEl) quizAvgEl.textContent=quizAvg+'%';
+if(skillsTestedEl) skillsTestedEl.textContent=quizResults.length;
+
 const statusCounts={UnderReview:0,Shortlisted:0,Rejected:0};
 apps.forEach(app=>{
 if(app.status==='Shortlisted')statusCounts.Shortlisted++;
 else if(app.status==='Rejected')statusCounts.Rejected++;
 else statusCounts.UnderReview++;
 });
+
 const statusBreakdown=document.getElementById('statusBreakdown');
+if(statusBreakdown){
 statusBreakdown.innerHTML=`
 <div class="internship-card">
 <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
@@ -1086,11 +1146,14 @@ statusBreakdown.innerHTML=`
 <strong style="color:#ef4444;">${statusCounts.Rejected}</strong>
 </div>
 </div>`;
+}
+
 const topQuizzes=document.getElementById('topQuizzes');
+if(topQuizzes){
 if(quizResults.length===0){
 topQuizzes.innerHTML='<p style="text-align:center;color:#666;">No quiz attempts yet</p>';
 }else{
-const sorted=quizResults.sort((a,b)=>b.score-a.score).slice(0,5);
+const sorted=[...quizResults].sort((a,b)=>b.score-a.score).slice(0,5);
 topQuizzes.innerHTML=sorted.map(q=>{
 const color=q.score>=75?'#10b981':q.score>=50?'#f59e0b':'#ef4444';
 return`
@@ -1108,8 +1171,13 @@ return`
 </div>`;
 }).join('');
 }
+}
+console.log('Analytics loaded successfully');
 })
-.catch(err=>console.error('Error loading analytics:',err));
+.catch(err=>{
+console.error('Error loading analytics:',err);
+showError('Failed to load analytics');
+});
 }
 
 function checkATSScore() {
@@ -1117,7 +1185,7 @@ function checkATSScore() {
     const jobDescription = document.getElementById('jobDescription').value;
     
     if (!resumeFile || !jobDescription) {
-        alert('Please upload resume PDF and enter job description');
+        showWarning('Please upload resume PDF and enter job description');
         return;
     }
     
@@ -1125,14 +1193,14 @@ function checkATSScore() {
     formData.append('resume', resumeFile);
     formData.append('jobDescription', jobDescription);
     
-    fetch('/ats/checkPDF', {
+    fetch(`${BACKEND_URL}/ats/checkPDF`, {
         method: 'POST',
         body: formData
     })
     .then(res => res.json())
     .then(data => {
         if (!data.success) {
-            alert('Error: ' + data.error);
+            showError('Error: ' + data.error);
             return;
         }
         
@@ -1159,6 +1227,6 @@ function checkATSScore() {
     })
     .catch(err => {
         console.error('Error checking ATS:', err);
-        alert('Failed to check ATS score. Please try again.');
+        showError('Failed to check ATS score. Please try again.');
     });
 }
