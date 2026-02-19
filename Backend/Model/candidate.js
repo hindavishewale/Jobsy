@@ -1,7 +1,4 @@
 const mongoose=require('mongoose');
-mongoose.connect(process.env.MONGO_URI)
-.then(()=>{console.log("Mongo connected for candidate")})
-.catch((err)=>console.log("error of mongo candidate : ",err))
 const candidateSchema=new mongoose.Schema({
     Name:{
         type:String,
