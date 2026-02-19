@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/Jobsy")
+mongoose.connect("process.env.MONGO_URI")
 .then(()=>{console.log("Mongo connected for internships")})
 .catch((err)=>console.log("error of mongo internships : ",err))
 const internshipSchema = new mongoose.Schema(
