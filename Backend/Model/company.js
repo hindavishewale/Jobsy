@@ -1,9 +1,4 @@
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("Mongo connected for company");
-  })
-  .catch((err) => console.log("error of mongo company : ", err));
 const companySchema = new mongoose.Schema({
   CompanyName: {
     type: String,
